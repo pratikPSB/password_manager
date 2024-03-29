@@ -12,3 +12,10 @@ Prefs prefs() => Prefs();
 const String prefKeyTheme = "pref_theme";
 const String prefKeyLocale = "pref_locale";
 const String prefKeyUser = "pref_user";
+const String prefHapticFeedbackEnabled = "pref_haptic_feedback_enabled";
+
+enableHapticFeedback({bool isEnabled = true}) {
+  prefs().setBoolean(prefHapticFeedbackEnabled, isEnabled);
+}
+
+Future<bool> isHapticFeedbackEnabled() => prefs().getBoolean(prefHapticFeedbackEnabled);

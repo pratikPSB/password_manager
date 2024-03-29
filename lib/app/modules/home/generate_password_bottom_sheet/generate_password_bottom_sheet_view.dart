@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../data/resources/size_config.dart';
+import '../../../data/utils/extensions.dart';
 import '../../../data/utils/widgets.dart';
 import 'generate_password_bottom_sheet_controller.dart';
 
@@ -12,6 +13,7 @@ class GeneratePasswordBottomSheetView extends GetView<GeneratePasswordBottomShee
 
   @override
   Widget build(BuildContext context) {
+    controller.createPassword();
     return Wrap(
       children: [
         Container(
@@ -66,6 +68,7 @@ class GeneratePasswordBottomSheetView extends GetView<GeneratePasswordBottomShee
                 getElevatedButton(
                     text: "copy and close",
                     onButtonPressed: () {
+                      performHapticFeedback();
                       Clipboard.setData(ClipboardData(text: controller.password.value))
                           .then((_) async {
                         if (Get.isBottomSheetOpen ?? false) {
@@ -103,6 +106,7 @@ class GeneratePasswordBottomSheetView extends GetView<GeneratePasswordBottomShee
                   onChanged: (value) {
                     int finalValue = value.round() + 4;
                     if (finalValue != controller.pwdLength.value) {
+                      performHapticFeedback();
                       controller.updatePwdLengthOption(finalValue);
                     }
                   },
@@ -122,10 +126,16 @@ class GeneratePasswordBottomSheetView extends GetView<GeneratePasswordBottomShee
               Text(tileName),
               const Spacer(),
               Obx(() => Switch(
-                    onChanged: (value) => switch (type) {
-                      SwitchType.typeSC => controller.updateSpecialCharOption(value),
-                      SwitchType.typeCL => controller.updateCapitalLettersOption(value),
-                      SwitchType.typeNM => controller.updateNumberOption(value),
+                    onChanged: (value) {
+                      performHapticFeedback();
+                      switch (type) {
+                        case SwitchType.typeSC:
+                          controller.updateSpecialCharOption(value);
+                        case SwitchType.typeCL:
+                          controller.updateCapitalLettersOption(value);
+                        case SwitchType.typeNM:
+                          controller.updateNumberOption(value);
+                      }
                     },
                     value: switch (type) {
                       SwitchType.typeSC => controller.enableSpecialChars.value,

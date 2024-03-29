@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/home/generate_credentials/generate_credentials_binding.dart';
+import '../modules/home/generate_credentials/generate_credentials_view.dart';
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_binding.dart';
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import '../modules/home/home_binding.dart';
@@ -30,6 +32,11 @@ class AppPages {
           name: _Paths.GENERATE_PASSWORD_BOTTOM_SHEET,
           page: () => const GeneratePasswordBottomSheetView(),
           binding: GeneratePasswordBottomSheetBinding(),
+        ),
+        GetPage(
+          name: _Paths.GENERATE_CREDENTIALS,
+          page: () => const GenerateCredentialsView(),
+          binding: GenerateCredentialsBinding(),
         ),
       ],
     ),

@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'constants.dart';
 
 extension StringExtension on String {
   int getColorHexFromStr() {
@@ -39,4 +42,8 @@ printDebug(dynamic message) {
   if (kDebugMode) {
     print(message);
   }
+}
+
+performHapticFeedback() {
+  isHapticFeedbackEnabled().then((value) => {if (value) HapticFeedback.selectionClick()});
 }
