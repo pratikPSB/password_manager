@@ -111,9 +111,10 @@ GetSnackBar getSnackBar({required String message, String? title}) => GetSnackBar
       overlayBlur: 1,
     );
 
-InputDecoration getCommonInputDecoration(String labelText) {
+InputDecoration getCommonInputDecoration(String labelText, {String hintText = ""}) {
   return InputDecoration(
       labelText: labelText,
+      hintText: (hintText.isEmpty) ? labelText : hintText,
       border: OutlineInputBorder(borderRadius: 100.modifyCorners()),
       floatingLabelAlignment: FloatingLabelAlignment.center,
       floatingLabelBehavior: FloatingLabelBehavior.auto);

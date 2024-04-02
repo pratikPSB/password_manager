@@ -36,7 +36,7 @@ class AppPages {
         ),
         GetPage(
           name: _Paths.GENERATE_CREDENTIALS,
-          page: () => const GenerateCredentialsView(),
+          page: () => GenerateCredentialsView(),
           binding: GenerateCredentialsBinding(),
           transition: Transition.downToUp,
         ),

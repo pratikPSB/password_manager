@@ -94,7 +94,7 @@ class GeneratePasswordBottomSheetView extends GetView<GeneratePasswordBottomShee
       padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
       child: Row(
         children: [
-          Obx(() => Text("${controller.pwdLength.value} words")),
+          Obx(() => Text("${controller.pwdLength.value} characters")),
           SizedBox(
             width: SizeConfig.safeBlockHorizontal * 3,
           ),
