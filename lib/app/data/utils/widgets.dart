@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/resources/size_config.dart';
 import 'package:password_manager/app/data/resources/theme_utils.dart';
@@ -31,6 +30,40 @@ Widget _getButton(
     ),
     loadingStateWidget: CircularProgressIndicator(
       strokeWidth: 3.0,
+      valueColor: AlwaysStoppedAnimation<Color>(
+        (buttonType != EasyButtonType.elevated)
+            ? Get.theme.colorScheme.primary
+            : Get.theme.colorScheme.onPrimary,
+      ),
+    ),
+  );
+}
+
+Widget getCustomSizedButton(
+    {required String text,
+    required EasyButtonType buttonType,
+    required Function() onButtonPressed,
+    double width = double.infinity,
+    double height = 50,
+    double contentGap = 6.0,
+    double progressStrokeWidth = 3.0}) {
+  return EasyButton(
+    onPressed: onButtonPressed,
+    type: buttonType,
+    useWidthAnimation: true,
+    useEqualLoadingStateWidgetDimension: (buttonType == EasyButtonType.text) ? false : true,
+    width: width,
+    height: height,
+    contentGap: contentGap,
+    borderRadius: 50,
+    idleStateWidget: Text(
+      text,
+      style: (buttonType != EasyButtonType.elevated)
+          ? styleLight.copyWith(color: Get.theme.colorScheme.primary)
+          : styleDark.copyWith(color: Get.theme.colorScheme.onPrimary),
+    ),
+    loadingStateWidget: CircularProgressIndicator(
+      strokeWidth: progressStrokeWidth,
       valueColor: AlwaysStoppedAnimation<Color>(
         (buttonType != EasyButtonType.elevated)
             ? Get.theme.colorScheme.primary

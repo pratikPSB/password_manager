@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
+import 'package:password_manager/app/data/utils/go.dart';
+import 'package:password_manager/app/routes/app_pages.dart';
 
 import '../../data/resources/size_config.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
@@ -19,6 +20,7 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          performHapticFeedback();
           Get.bottomSheet(buildCredentialInsertionOptionBottomSheet());
         },
         tooltip: "Add password",
@@ -48,7 +50,7 @@ class HomeView extends GetView<HomeController> {
                 title: "Login",
                 subTitle: "Add login details for an app or site",
                 onPressed: () {
-                  Fluttertoast.showToast(msg: "clicked", toastLength: Toast.LENGTH_SHORT);
+                  Go.toNamed(Routes.GENERATE_CREDENTIALS);
                 },
               ),
               addCredentialInsertionTypeRow(
@@ -90,6 +92,7 @@ class HomeView extends GetView<HomeController> {
       InkWell(
         borderRadius: 5.modifyCorners(),
         onTap: () async {
+          performHapticFeedback();
           if (Get.isBottomSheetOpen ?? false) {
             Get.back();
           }

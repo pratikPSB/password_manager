@@ -27,6 +27,7 @@ class AppPages {
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      transition: Transition.rightToLeft,
       children: [
         GetPage(
           name: _Paths.GENERATE_PASSWORD_BOTTOM_SHEET,
@@ -37,6 +38,7 @@ class AppPages {
           name: _Paths.GENERATE_CREDENTIALS,
           page: () => const GenerateCredentialsView(),
           binding: GenerateCredentialsBinding(),
+          transition: Transition.downToUp,
         ),
       ],
     ),
@@ -44,21 +46,25 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: _Paths.LOGIN,
       page: () => LoginView(),
       binding: LoginBinding(),
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: _Paths.LOGIN_OR_REGISTER,
       page: () => const LoginOrRegisterView(),
       binding: LoginOrRegisterBinding(),
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: _Paths.REGISTER,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
+      transition: Transition.rightToLeft,
     ),
   ];
 }
