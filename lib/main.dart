@@ -5,11 +5,15 @@ import 'package:get/get.dart';
 import 'app/data/resources/size_config.dart';
 import 'app/data/resources/strings.dart';
 import 'app/data/resources/theme_utils.dart';
+import 'app/data/services/localDB/ObjectBox.dart';
 import 'app/routes/app_pages.dart';
+
+late ObjectBox objectBox;
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  objectBox = await ObjectBox.create();
   runApp(const MainApp());
 }
 

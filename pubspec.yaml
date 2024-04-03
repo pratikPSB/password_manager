@@ -16,6 +16,7 @@ dependencies:
   objectbox_flutter_libs: any
   path_provider: ^2.0.10
   path: ^1.8.0
+  json_annotation: ^4.8.1
 
   fluttertoast: ^8.2.4
 
@@ -32,13 +33,16 @@ dependencies:
   auto_size_text: ^3.0.0
 
 dev_dependencies:
-  flutter_lints: 3.0.1
+  analyzer: ^6.4.1
+  flutter_lints: 3.0.2
+  build_runner: ^2.4.8
   objectbox_generator: ^2.4.0
+  json_serializable: ^6.7.1
   flutter_test:
     sdk: flutter
 
 flutter:
-  generate: true
+#  generate: true
   uses-material-design: true
   assets:
     - assets/images/
