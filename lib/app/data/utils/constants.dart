@@ -13,6 +13,7 @@ const String prefKeyTheme = "pref_theme";
 const String prefKeyLocale = "pref_locale";
 const String prefKeyUser = "pref_user";
 const String prefHapticFeedbackEnabled = "pref_haptic_feedback_enabled";
+const String prefSelectedVaultId = "pref_selected_vault_id";
 
 enableHapticFeedback({bool isEnabled = true}) {
   prefs().setBoolean(prefHapticFeedbackEnabled, isEnabled);

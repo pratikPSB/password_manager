@@ -24,7 +24,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 8176031653072006250),
       name: 'CredentialsModel',
-      lastPropertyId: const obx_int.IdUid(13, 2179557567610334391),
+      lastPropertyId: const obx_int.IdUid(15, 3069482214139120658),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -91,6 +91,16 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(13, 2179557567610334391),
             name: 'cardPin',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(14, 2767379020994138799),
+            name: 'createdAt',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(15, 3069482214139120658),
+            name: 'updatedAt',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -98,7 +108,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 154367247481733975),
       name: 'VaultModel',
-      lastPropertyId: const obx_int.IdUid(4, 2161531852947082650),
+      lastPropertyId: const obx_int.IdUid(6, 1582668453177198878),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -120,6 +130,16 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(4, 2161531852947082650),
             name: 'iconPath',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 5482521063574432999),
+            name: 'createdAt',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 1582668453177198878),
+            name: 'updatedAt',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -215,7 +235,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               object.cvvCode == null ? null : fbb.writeString(object.cvvCode!);
           final cardPinOffset =
               object.cardPin == null ? null : fbb.writeString(object.cardPin!);
-          fbb.startTable(14);
+          fbb.startTable(16);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, vaultIdOffset);
           fbb.addOffset(2, credTypeOffset);
@@ -229,12 +249,18 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(10, expiryDateOffset);
           fbb.addOffset(11, cvvCodeOffset);
           fbb.addOffset(12, cardPinOffset);
+          fbb.addInt64(13, object.createdAt?.millisecondsSinceEpoch);
+          fbb.addInt64(14, object.updatedAt?.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final createdAtValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 30);
+          final updatedAtValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 32);
           final vaultIdParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 6);
           final credTypeParam = const fb.StringReader(asciiOptimization: true)
@@ -261,6 +287,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGetNullable(buffer, rootOffset, 26);
           final cardPinParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 28);
+          final createdAtParam = createdAtValue == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(createdAtValue);
+          final updatedAtParam = updatedAtValue == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
           final object = CredentialsModel(
               vaultId: vaultIdParam,
               credType: credTypeParam,
@@ -273,7 +305,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               cardNumber: cardNumberParam,
               expiryDate: expiryDateParam,
               cvvCode: cvvCodeParam,
-              cardPin: cardPinParam)
+              cardPin: cardPinParam,
+              createdAt: createdAtParam,
+              updatedAt: updatedAtParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -295,27 +329,41 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final iconPathOffset = object.iconPath == null
               ? null
               : fbb.writeString(object.iconPath!);
-          fbb.startTable(5);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, vaultColorOffset);
           fbb.addOffset(3, iconPathOffset);
+          fbb.addInt64(4, object.createdAt?.millisecondsSinceEpoch);
+          fbb.addInt64(5, object.updatedAt?.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final createdAtValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 12);
+          final updatedAtValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 14);
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 6);
           final vaultColorParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 8);
           final iconPathParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 10);
+          final createdAtParam = createdAtValue == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(createdAtValue);
+          final updatedAtParam = updatedAtValue == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
           final object = VaultModel(
               name: nameParam,
               vaultColor: vaultColorParam,
-              iconPath: iconPathParam)
+              iconPath: iconPathParam,
+              createdAt: createdAtParam,
+              updatedAt: updatedAtParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -378,6 +426,14 @@ class CredentialsModel_ {
   /// see [CredentialsModel.cardPin]
   static final cardPin =
       obx.QueryStringProperty<CredentialsModel>(_entities[0].properties[12]);
+
+  /// see [CredentialsModel.createdAt]
+  static final createdAt =
+      obx.QueryDateProperty<CredentialsModel>(_entities[0].properties[13]);
+
+  /// see [CredentialsModel.updatedAt]
+  static final updatedAt =
+      obx.QueryDateProperty<CredentialsModel>(_entities[0].properties[14]);
 }
 
 /// [VaultModel] entity fields to define ObjectBox queries.
@@ -397,4 +453,12 @@ class VaultModel_ {
   /// see [VaultModel.iconPath]
   static final iconPath =
       obx.QueryStringProperty<VaultModel>(_entities[1].properties[3]);
+
+  /// see [VaultModel.createdAt]
+  static final createdAt =
+      obx.QueryDateProperty<VaultModel>(_entities[1].properties[4]);
+
+  /// see [VaultModel.updatedAt]
+  static final updatedAt =
+      obx.QueryDateProperty<VaultModel>(_entities[1].properties[5]);
 }

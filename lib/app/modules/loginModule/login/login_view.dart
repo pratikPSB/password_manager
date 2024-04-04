@@ -66,13 +66,13 @@ class LoginView extends GetView<LoginController> {
                               textInputAction: TextInputAction.done,
                               decoration: getCommonInputDecoration(password.tr).copyWith(
                                   errorMaxLines: 2,
-                                  suffixIcon: IconButton(
-                                      onPressed: () {
+                                  suffixIcon: GestureDetector(
+                                      onTap: () {
                                         controller.isHidePassword.value =
                                             !controller.isHidePassword.value;
                                         controller.update();
                                       },
-                                      icon: Icon(
+                                      child: Icon(
                                         controller.isHidePassword.value
                                             ? Icons.visibility_outlined
                                             : Icons.visibility_off_outlined,

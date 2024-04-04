@@ -45,6 +45,10 @@ class CredentialsModel {
   String? cvvCode;
   @JsonKey(name: "cardPin")
   String? cardPin;
+  @JsonKey(name: "createdAt")
+  DateTime? createdAt;
+  @JsonKey(name: "updatedAt")
+  DateTime? updatedAt;
 
   CredentialsModel({
     this.vaultId,
@@ -59,6 +63,8 @@ class CredentialsModel {
     this.expiryDate,
     this.cvvCode,
     this.cardPin,
+    this.createdAt,
+    this.updatedAt,
   });
 
   CredentialsModel copyWith({
@@ -74,6 +80,8 @@ class CredentialsModel {
     String? expiryDate,
     String? cvvCode,
     String? cardPin,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) =>
       CredentialsModel(
         vaultId: vaultId ?? this.vaultId,
@@ -88,6 +96,8 @@ class CredentialsModel {
         expiryDate: expiryDate ?? this.expiryDate,
         cvvCode: cvvCode ?? this.cvvCode,
         cardPin: cardPin ?? this.cardPin,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
 
   factory CredentialsModel.fromJson(Map<String, dynamic> json) => _$CredentialsModelFromJson(json);

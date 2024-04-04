@@ -63,9 +63,6 @@ objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
   output_dir: generated/objectBox
 
-flutter_json:
-  generated_path: generated/json/
-
 flutter_native_splash:
   color: "#ffffff"
   image: "assets/images/pm_logo.png"
