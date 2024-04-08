@@ -67,7 +67,7 @@ jobs:
           channel: ${{ matrix.flutter-version }}
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - run: flutter update-packages
         if: matrix.bot == 'flutter_repo'
