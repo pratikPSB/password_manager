@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [windows-latest, macOS-latest]
         node-version: [10]
         dart-version: [stable, dev]
         # For now, code-version will mirror dart-version to reduce the number of bots
@@ -57,12 +57,12 @@ jobs:
       - run: flutter update-packages
         if: matrix.bot == 'flutter_repo'
 
-      - name: Print Dart version
-        run: dart --version
+      # - name: Print Dart version
+      #   run: dart --version
 
-      - name: Print Flutter version
-        if: "!startsWith(matrix.bot, 'dart')"
-        run: flutter --version
+      # - name: Print Flutter version
+      #   if: "!startsWith(matrix.bot, 'dart')"
+      #   run: flutter --version
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
