@@ -100,6 +100,7 @@ class GenerateCredentialsController extends GetxController {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       ));
+      Get.back();
     }
   }
 

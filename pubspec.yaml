@@ -32,6 +32,9 @@ dependencies:
   # auto size text view
   auto_size_text: ^3.0.0
 
+#  flutter profile picture
+  flutter_profile_picture: ^2.0.0
+
 dev_dependencies:
   analyzer: ^6.4.1
   flutter_lints: 3.0.2

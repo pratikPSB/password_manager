@@ -1,15 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:get/get.dart';
+import 'package:password_manager/app/data/db/VaultModel.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
 
+import '../../data/db/CredentialsModel.dart';
 import '../../data/resources/size_config.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import 'home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  late final StreamBuilder<List<VaultModel>> streamBuilder = StreamBuilder<List<VaultModel>>(
+    key: controller.streamVaultKey,
+    stream: controller.streamVault,
+    builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
+      return SliverList.builder(
+        key: controller.lvbVaultKey,
+        itemCount: snapshot.hasData ? snapshot.data?.length : 0,
+        itemBuilder: (context, index) {
+          return ListTile(
+            contentPadding: const EdgeInsetsDirectional.only(start: 10),
+            leading: ProfilePicture(
+                name: snapshot.data![index].name!,
+                radius: 30,
+                fontsize: Get.textTheme.bodyLarge!.fontSize!),
+            trailing: IconButton(
+                iconSize: 24,
+                onPressed: () {},
+                icon: const Icon(Icons.more_vert_rounded)),
+            horizontalTitleGap: 10,
+            minVerticalPadding: 10,
+            title: Text(
+              "${snapshot.data?[index].name}",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text("${snapshot.data?[index].name}",
+                maxLines: 2, overflow: TextOverflow.ellipsis),
+            onTap: () {},
+          );
+        },
+      );
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +58,22 @@ class HomeView extends GetView<HomeController> {
         title: const Text('Password Manager'),
         centerTitle: true,
       ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Text(
+                  "Vaults",
+                  style: Get.textTheme.headlineSmall,
+                ),
+              ),
+              streamBuilder,
+            ],
+          ),
+        ),
+      ),
+      drawerEnableOpenDragGesture: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           performHapticFeedback();
@@ -26,10 +82,36 @@ class HomeView extends GetView<HomeController> {
         tooltip: "Add password",
         child: const Icon(Icons.add),
       ),
-      body: const Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
+      body: StreamBuilder<List<CredentialsModel>>(
+        stream: controller.streamCredentials,
+        builder: (context, snapshot) => ListView.builder(
+          key: controller.lvbCredentialsKey,
+          itemCount: snapshot.hasData ? snapshot.data?.length : 0,
+          itemBuilder: (context, index) {
+            return ListTile(
+              contentPadding: const EdgeInsetsDirectional.only(start: 10),
+              leading: ProfilePicture(
+                  name: snapshot.data![index].name!,
+                  radius: 30,
+                  fontsize: Get.textTheme.bodyLarge!.fontSize!),
+              trailing: IconButton(
+                  iconSize: 24, onPressed: () {}, icon: const Icon(Icons.more_vert_rounded)),
+              horizontalTitleGap: 10,
+              minVerticalPadding: 10,
+              title: Expanded(
+                child: Text(
+                  "${snapshot.data?[index].name}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              subtitle: Expanded(
+                child: Text("${snapshot.data?[index].email}",
+                    maxLines: 2, overflow: TextOverflow.ellipsis),
+              ),
+              onTap: () {},
+            );
+          },
         ),
       ),
     );
