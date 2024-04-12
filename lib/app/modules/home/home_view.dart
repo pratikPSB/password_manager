@@ -2,54 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/db/VaultModel.dart';
+import 'package:password_manager/app/data/resources/assets.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
 
+import '../../../main.dart';
 import '../../data/db/CredentialsModel.dart';
 import '../../data/resources/size_config.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import 'home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  HomeView({super.key});
-
-  late final StreamBuilder<List<VaultModel>> streamBuilder = StreamBuilder<List<VaultModel>>(
-    key: controller.streamVaultKey,
-    stream: controller.streamVault,
-    builder: (context, snapshot) {
-      if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      }
-      return SliverList.builder(
-        key: controller.lvbVaultKey,
-        itemCount: snapshot.hasData ? snapshot.data?.length : 0,
-        itemBuilder: (context, index) {
-          return ListTile(
-            contentPadding: const EdgeInsetsDirectional.only(start: 10),
-            leading: ProfilePicture(
-                name: snapshot.data![index].name!,
-                radius: 30,
-                fontsize: Get.textTheme.bodyLarge!.fontSize!),
-            trailing: IconButton(
-                iconSize: 24,
-                onPressed: () {},
-                icon: const Icon(Icons.more_vert_rounded)),
-            horizontalTitleGap: 10,
-            minVerticalPadding: 10,
-            title: Text(
-              "${snapshot.data?[index].name}",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Text("${snapshot.data?[index].name}",
-                maxLines: 2, overflow: TextOverflow.ellipsis),
-            onTap: () {},
-          );
-        },
-      );
-    },
-  );
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,18 +24,81 @@ class HomeView extends GetView<HomeController> {
         centerTitle: true,
       ),
       drawer: Drawer(
-        child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Text(
-                  "Vaults",
-                  style: Get.textTheme.headlineSmall,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: DrawerHeader(
+                curve: Curves.elasticIn,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      imgLogo,
+                      width: 70,
+                      height: 70,
+                    ),
+                    SizedBox(height: SizeConfig.safeBlockHorizontal * 2),
+                    Text(
+                      "Password Manager",
+                      style: Get.textTheme.titleLarge,
+                    ),
+                  ],
                 ),
               ),
-              streamBuilder,
-            ],
-          ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, bottom: 10.0, top: 5.0),
+                child: Text(
+                  "Vaults",
+                  style: Get.textTheme.titleMedium,
+                ),
+              ),
+            ),
+            SliverList.builder(
+              itemCount:
+                  objectBox.getVaultsList().isNotEmpty ? objectBox.getVaultsList().length : 0,
+              itemBuilder: (context, index) {
+                VaultModel model = objectBox.getVaultsList()[index];
+                return FutureBuilder<bool>(
+                  future: controller.isSelectedVault(model),
+                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    return ListTile(
+                      selected: snapshot.data!,
+                      contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                      leading: ProfilePicture(
+                          name: model.name!,
+                          radius: 30,
+                          fontsize: Get.textTheme.bodyLarge!.fontSize!),
+                      trailing: IconButton(
+                          iconSize: 24,
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_vert_rounded)),
+                      horizontalTitleGap: 10,
+                      minVerticalPadding: 10,
+                      title: Text(
+                        "${model.name}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        "${model.name}",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        Get.back();
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            const SliverToBoxAdapter(
+              child: Spacer(),
+            ),
+          ],
         ),
       ),
       drawerEnableOpenDragGesture: true,
@@ -98,16 +126,15 @@ class HomeView extends GetView<HomeController> {
                   iconSize: 24, onPressed: () {}, icon: const Icon(Icons.more_vert_rounded)),
               horizontalTitleGap: 10,
               minVerticalPadding: 10,
-              title: Expanded(
-                child: Text(
-                  "${snapshot.data?[index].name}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              title: Text(
+                "${snapshot.data?[index].name}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              subtitle: Expanded(
-                child: Text("${snapshot.data?[index].email}",
-                    maxLines: 2, overflow: TextOverflow.ellipsis),
+              subtitle: Text(
+                controller.getTextForSubtitle(snapshot.data![index]),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               onTap: () {},
             );
@@ -145,7 +172,9 @@ class HomeView extends GetView<HomeController> {
                 icon: Icons.credit_card,
                 title: "Credit card",
                 subTitle: "securely store your payment information",
-                onPressed: () {},
+                onPressed: () {
+                  Go.toNamed(Routes.GENERATE_CARD_CREDENTIALS);
+                },
               ),
               addCredentialInsertionTypeRow(
                 icon: Icons.sticky_note_2_outlined,

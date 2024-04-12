@@ -111,6 +111,37 @@ GetSnackBar getSnackBar({required String message, String? title}) => GetSnackBar
       overlayBlur: 1,
     );
 
+AppBar getCommonAppBar({
+  required String text,
+  required Function() onButtonPressed,
+}) =>
+    AppBar(
+      leading: IconButton(
+        onPressed: () {
+          performHapticFeedback();
+          Get.back();
+        },
+        icon: const Icon(
+          Icons.close_rounded,
+          size: 24,
+        ),
+      ),
+      actions: [
+        getCustomSizedButton(
+          text: text,
+          buttonType: EasyButtonType.elevated,
+          width: 100,
+          height: 35,
+          contentGap: 6.0,
+          progressStrokeWidth: 2.0,
+          onButtonPressed: onButtonPressed,
+        ),
+        SizedBox(
+          width: SizeConfig.safeBlockHorizontal * 2,
+        ),
+      ],
+    );
+
 InputDecoration getCommonInputDecoration(String labelText, {String hintText = ""}) {
   return InputDecoration(
       labelText: labelText,

@@ -35,6 +35,9 @@ dependencies:
 #  flutter profile picture
   flutter_profile_picture: ^2.0.0
 
+#  multi formatter
+  flutter_multi_formatter: ^2.12.4
+
 dev_dependencies:
   analyzer: ^6.4.1
   flutter_lints: 3.0.2

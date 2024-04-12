@@ -41,6 +41,10 @@ class ObjectBox {
     return builder.watch(triggerImmediately: true).map((query) => query.find());
   }
 
+  List<VaultModel> getVaultsList() {
+    return _vaultBox.getAll();
+  }
+
   //add new vault
   Future<int> addVault(VaultModel post) => _vaultBox.putAsync(post);
 

@@ -19,7 +19,7 @@ class LoginController extends GetxController {
   openHome() async {
     performHapticFeedback();
     await Future.delayed(const Duration(milliseconds: 1000), () => 42);
-    if (await objectBox.getVaults().isEmpty) {
+    if (objectBox.getVaultsList().isEmpty) {
       int id = await objectBox.addVault(VaultModel(
           name: "Personal",
           vaultColor: "#232323",

@@ -4,7 +4,6 @@ import 'package:password_manager/app/data/utils/widgets.dart';
 import 'package:password_manager/app/modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import 'package:validators/validators.dart' as validator;
 
-import '../../../data/customClasses/easy_button.dart';
 import '../../../data/resources/size_config.dart';
 import '../../../data/resources/strings.dart' as string_util;
 import '../../../data/utils/constants.dart';
@@ -17,34 +16,10 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            performHapticFeedback();
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.close_rounded,
-            size: 24,
-          ),
-        ),
-        actions: [
-          getCustomSizedButton(
-            text: "create login",
-            buttonType: EasyButtonType.elevated,
-            width: 100,
-            height: 35,
-            contentGap: 6.0,
-            progressStrokeWidth: 2.0,
-            onButtonPressed: controller.insertCredentialsToDB,
-          ),
-          SizedBox(
-            width: SizeConfig.safeBlockHorizontal * 2,
-          ),
-        ],
-      ),
+      appBar:
+          getCommonAppBar(text: "create login", onButtonPressed: controller.insertCredentialsToDB),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
         children: [
           CustomScrollView(
             shrinkWrap: true,
@@ -162,7 +137,9 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
               )
             ],
           ),
-          const Spacer(flex: 2,),
+          const Spacer(
+            flex: 2,
+          ),
           Obx(() {
             if (controller.isShowButtons.value) {
               if (controller.showWhichButton.value == "EMAIL") {

@@ -9,8 +9,11 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const LOGIN_OR_REGISTER = _Paths.LOGIN_OR_REGISTER;
   static const REGISTER = _Paths.REGISTER;
-  static const GENERATE_PASSWORD_BOTTOM_SHEET = _Paths.HOME + _Paths.GENERATE_PASSWORD_BOTTOM_SHEET;
+  static const GENERATE_PASSWORD_BOTTOM_SHEET =
+      _Paths.HOME + _Paths.GENERATE_PASSWORD_BOTTOM_SHEET;
   static const GENERATE_CREDENTIALS = _Paths.HOME + _Paths.GENERATE_CREDENTIALS;
+  static const GENERATE_CARD_CREDENTIALS =
+      _Paths.HOME + _Paths.GENERATE_CARD_CREDENTIALS;
 }
 
 abstract class _Paths {
@@ -21,6 +24,8 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const LOGIN_OR_REGISTER = '/login-or-register';
   static const REGISTER = '/register';
-  static const GENERATE_PASSWORD_BOTTOM_SHEET = '/generate-password-bottom-sheet';
+  static const GENERATE_PASSWORD_BOTTOM_SHEET =
+      '/generate-password-bottom-sheet';
   static const GENERATE_CREDENTIALS = '/generate-credentials';
+  static const GENERATE_CARD_CREDENTIALS = '/generate-card-credentials';
 }

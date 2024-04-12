@@ -27,7 +27,7 @@ class GenerateCredentialsController extends GetxController {
   late StreamSubscription<String> stream;
 
   final RxBool isHidePassword = true.obs;
-  final RxBool isShowButtons = true.obs;
+  final RxBool isShowButtons = false.obs;
   final RxString showWhichButton = "EMAIL".obs;
 
   RxString title = "".obs;
@@ -92,6 +92,7 @@ class GenerateCredentialsController extends GetxController {
       int id = await prefs().getInt(prefSelectedVaultId);
       objectBox.addCredential(CredentialsModel(
         vaultId: id.toString(),
+        credType: CredentialType.login.name,
         name: titleController.text,
         email: emailController.text,
         password: pwdController.text,

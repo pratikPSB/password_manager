@@ -104,3 +104,10 @@ class CredentialsModel {
 
   Map<String, dynamic> toJson() => _$CredentialsModelToJson(this);
 }
+
+enum CredentialType {
+  login,
+  alias,
+  card,
+  note
+}

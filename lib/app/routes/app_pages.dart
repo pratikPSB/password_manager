@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/home/generate_card_credentials/generate_card_credentials_binding.dart';
+import '../modules/home/generate_card_credentials/generate_card_credentials_view.dart';
 import '../modules/home/generate_credentials/generate_credentials_binding.dart';
 import '../modules/home/generate_credentials/generate_credentials_view.dart';
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_binding.dart';
@@ -25,7 +27,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
       transition: Transition.rightToLeft,
       children: [
@@ -39,6 +41,11 @@ class AppPages {
           page: () => const GenerateCredentialsView(),
           binding: GenerateCredentialsBinding(),
           transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: _Paths.GENERATE_CARD_CREDENTIALS,
+          page: () => const GenerateCardCredentialsView(),
+          binding: GenerateCardCredentialsBinding(),
         ),
       ],
     ),
