@@ -4,6 +4,8 @@ import '../modules/home/generate_card_credentials/generate_card_credentials_bind
 import '../modules/home/generate_card_credentials/generate_card_credentials_view.dart';
 import '../modules/home/generate_credentials/generate_credentials_binding.dart';
 import '../modules/home/generate_credentials/generate_credentials_view.dart';
+import '../modules/home/generate_note/generate_note_binding.dart';
+import '../modules/home/generate_note/generate_note_view.dart';
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_binding.dart';
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import '../modules/home/home_binding.dart';
@@ -46,6 +48,13 @@ class AppPages {
           name: _Paths.GENERATE_CARD_CREDENTIALS,
           page: () => const GenerateCardCredentialsView(),
           binding: GenerateCardCredentialsBinding(),
+          transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: _Paths.GENERATE_NOTE,
+          page: () => const GenerateNoteView(),
+          binding: GenerateNoteBinding(),
+          transition: Transition.downToUp,
         ),
       ],
     ),

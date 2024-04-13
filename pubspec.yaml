@@ -20,8 +20,9 @@ dependencies:
 
   fluttertoast: ^8.2.4
 
-  #  add customized splash screen
+  #  add customized splash screen & launcher icon
   flutter_native_splash: ^2.3.9
+  flutter_launcher_icons: ^0.13.1
 
   #  to add most of all validations
   validators: ^3.0.0
@@ -82,3 +83,22 @@ flutter_native_splash:
     icon_background_color_dark: "#353535"
 
   web: false
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/pm_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/images/pm_logo.png"
+    background_color: "#353535"
+    theme_color: "#353535"
+  windows:
+    generate: true
+    image_path: "assets/images/pm_logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/pm_logo.png"
