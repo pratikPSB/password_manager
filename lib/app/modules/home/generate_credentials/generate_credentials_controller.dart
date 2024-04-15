@@ -7,6 +7,7 @@ import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/app/modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_controller.dart';
 import 'package:password_manager/main.dart';
 
+import '../../../data/utils/encrypt_decrypt.dart';
 import '../../../data/utils/extensions.dart';
 
 class GenerateCredentialsController extends GetxController {
@@ -90,16 +91,17 @@ class GenerateCredentialsController extends GetxController {
     if(formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
       int id = await prefs().getInt(prefSelectedVaultId);
+      DateTime dateTime = DateTime.now();
       objectBox.addCredential(CredentialsModel(
         vaultId: id.toString(),
         credType: CredentialType.login.name,
         name: titleController.text,
-        email: emailController.text,
-        password: pwdController.text,
+        email: EncryptData.encryptAES(finalKey, emailController.text),
+        password: EncryptData.encryptAES(finalKey, pwdController.text),
         websites: [websiteController.text],
-        notes: noteController.text,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        notes: EncryptData.encryptAES(finalKey, noteController.text),
+        createdAt: dateTime,
+        updatedAt: dateTime,
       ));
       Get.back();
     }

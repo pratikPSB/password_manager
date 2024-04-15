@@ -36,15 +36,9 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
                         textInputAction: TextInputAction.next,
                         decoration:
                             getCommonInputDecoration("Title", hintText: "Untitled").copyWith(
-                          hintStyle: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          hintStyle: titleTextStyle,
                         ),
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: titleTextStyle,
                         validator: (text) {
                           if (text!.isEmpty) {
                             return "title must not be empty";

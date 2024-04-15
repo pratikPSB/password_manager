@@ -39,6 +39,9 @@ dependencies:
 #  multi formatter
   flutter_multi_formatter: ^2.12.4
 
+#  encrypt
+  encrypt: ^5.0.3
+
 dev_dependencies:
   analyzer: ^6.4.1
   flutter_lints: 3.0.2

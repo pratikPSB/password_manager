@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/db/CredentialsModel.dart';
 import 'package:password_manager/app/data/db/VaultModel.dart';
+import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
 
 import '../../../main.dart';
 import '../../data/utils/constants.dart';
@@ -13,13 +14,13 @@ class HomeController extends GetxController {
   String getTextForSubtitle(CredentialsModel data) {
     switch (CredentialType.values.byName(data.credType!)) {
       case CredentialType.login:
-        return data.email!;
+        return EncryptData.decryptAES(finalKey, data.email!);
       case CredentialType.card:
-        return data.cardNumber!;
+        return EncryptData.decryptAES(finalKey, data.cardNumber!);
       case CredentialType.alias:
-        return data.email!;
+        return EncryptData.decryptAES(finalKey, data.email!);
       case CredentialType.note:
-        return data.notes!;
+        return EncryptData.decryptAES(finalKey, data.notes!);
     }
   }
 

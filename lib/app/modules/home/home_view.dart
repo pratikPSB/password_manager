@@ -123,7 +123,12 @@ class HomeView extends GetView<HomeController> {
                   radius: 30,
                   fontsize: Get.textTheme.bodyLarge!.fontSize!),
               trailing: IconButton(
-                  iconSize: 24, onPressed: () {}, icon: const Icon(Icons.more_vert_rounded)),
+                iconSize: 24,
+                icon: const Icon(Icons.more_vert_rounded),
+                onPressed: () {
+                  performHapticFeedback();
+                },
+              ),
               horizontalTitleGap: 10,
               minVerticalPadding: 10,
               title: Text(
@@ -162,12 +167,12 @@ class HomeView extends GetView<HomeController> {
                   Go.toNamed(Routes.GENERATE_CREDENTIALS);
                 },
               ),
-              addCredentialInsertionTypeRow(
+              /*addCredentialInsertionTypeRow(
                 icon: Icons.masks_outlined,
                 title: "Alias",
                 subTitle: "Get an email alias to use on new apps",
                 onPressed: () {},
-              ),
+              ),*/
               addCredentialInsertionTypeRow(
                 icon: Icons.credit_card,
                 title: "Credit card",
@@ -180,7 +185,9 @@ class HomeView extends GetView<HomeController> {
                 icon: Icons.sticky_note_2_outlined,
                 title: "note",
                 subTitle: "jot down a PIN, code, or note to self",
-                onPressed: () {},
+                onPressed: () {
+                  Go.toNamed(Routes.GENERATE_NOTE);
+                },
               ),
               addCredentialInsertionTypeRow(
                 icon: Icons.key_outlined,
@@ -208,12 +215,9 @@ class HomeView extends GetView<HomeController> {
             Get.back();
           }
           //250 millis delay as bottomSheet's default dismiss time is 250 in get Lib.
-          await Future.delayed(
-            const Duration(milliseconds: 250),
-            () {
-              onPressed();
-            },
-          );
+          await Future.delayed(const Duration(milliseconds: 250), () {
+            onPressed();
+          });
         },
         child: Ink(
           padding: EdgeInsets.symmetric(

@@ -52,7 +52,7 @@ class CredentialsModel {
 
   CredentialsModel({
     this.vaultId,
-    this.credType,
+    required this.credType,
     this.name,
     this.email,
     this.password,

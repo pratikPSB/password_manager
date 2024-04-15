@@ -146,7 +146,13 @@ InputDecoration getCommonInputDecoration(String labelText, {String hintText = ""
   return InputDecoration(
       labelText: labelText,
       hintText: (hintText.isEmpty) ? labelText : hintText,
+      alignLabelWithHint: true,
       border: OutlineInputBorder(borderRadius: 100.modifyCorners()),
       floatingLabelAlignment: FloatingLabelAlignment.center,
       floatingLabelBehavior: FloatingLabelBehavior.auto);
 }
+
+TextStyle titleTextStyle = const TextStyle(
+  fontSize: 25,
+  fontWeight: FontWeight.bold,
+);

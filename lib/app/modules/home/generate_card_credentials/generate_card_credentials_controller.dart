@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_multi_formatter/formatters/credit_card_number_input_formatter.dart';
 import 'package:get/get.dart';
+import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
 
 import '../../../../main.dart';
 import '../../../data/db/CredentialsModel.dart';
@@ -37,18 +38,19 @@ class GenerateCardCredentialsController extends GetxController {
     if (formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
       int id = await prefs().getInt(prefSelectedVaultId);
+      DateTime dateTime = DateTime.now();
       objectBox.addCredential(CredentialsModel(
         vaultId: id.toString(),
         name: titleController.text,
-        nameOnCard: nameOnCardController.text,
+        nameOnCard: EncryptData.encryptAES(finalKey, nameOnCardController.text),
         credType: CredentialType.card.name,
-        cardNumber: cardNumberController.text,
-        expiryDate: expDateController.text,
-        cvvCode: cvvController.text,
-        cardPin: cardPinController.text,
-        notes: noteController.text,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        cardNumber: EncryptData.encryptAES(finalKey, cardNumberController.text),
+        expiryDate: EncryptData.encryptAES(finalKey, expDateController.text),
+        cvvCode: EncryptData.encryptAES(finalKey, cvvController.text),
+        cardPin: EncryptData.encryptAES(finalKey, cardPinController.text),
+        notes: EncryptData.encryptAES(finalKey, noteController.text),
+        createdAt: dateTime,
+        updatedAt: dateTime,
       ));
       Get.back();
     }

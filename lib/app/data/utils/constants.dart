@@ -8,6 +8,11 @@ final passwordRegEx =
 bool isPasswordValid(String text) => passwordRegEx.hasMatch(text);
 //endregion
 
+String s1 =
+    "kajdshcilbrevbqvilfbulqewb478b14387b2o84vbrelbaqwycb8qewbcqb843vb1qcwbqecuyqvbre8p43cb";
+String finalKey = s1.substring(20, 20 + 32);
+
+
 Prefs prefs() => Prefs();
 const String prefKeyTheme = "pref_theme";
 const String prefKeyLocale = "pref_locale";
