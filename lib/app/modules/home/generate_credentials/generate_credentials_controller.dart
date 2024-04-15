@@ -96,10 +96,10 @@ class GenerateCredentialsController extends GetxController {
         vaultId: id.toString(),
         credType: CredentialType.login.name,
         name: titleController.text,
-        email: EncryptData.encryptAES(finalKey, emailController.text),
-        password: EncryptData.encryptAES(finalKey, pwdController.text),
+        email: EncryptionUtils.encryptAES(emailController.text),
+        password: EncryptionUtils.encryptAES(pwdController.text),
         websites: [websiteController.text],
-        notes: EncryptData.encryptAES(finalKey, noteController.text),
+        notes: EncryptionUtils.encryptAES(noteController.text),
         createdAt: dateTime,
         updatedAt: dateTime,
       ));

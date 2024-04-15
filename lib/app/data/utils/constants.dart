@@ -10,7 +10,7 @@ bool isPasswordValid(String text) => passwordRegEx.hasMatch(text);
 
 String s1 =
     "kajdshcilbrevbqvilfbulqewb478b14387b2o84vbrelbaqwycb8qewbcqb843vb1qcwbqecuyqvbre8p43cb";
-String finalKey = s1.substring(20, 20 + 32);
+String finalKey = s1.substring(20, 20 + 16);
 
 
 Prefs prefs() => Prefs();
