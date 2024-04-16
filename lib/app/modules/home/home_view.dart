@@ -9,8 +9,10 @@ import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
 
 import '../../../main.dart';
+import '../../data/customClasses/easy_button.dart';
 import '../../data/db/CredentialsModel.dart';
 import '../../data/resources/size_config.dart';
+import '../../data/utils/widgets.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import 'home_controller.dart';
 
@@ -25,81 +27,100 @@ class HomeView extends GetView<HomeController> {
         centerTitle: true,
       ),
       drawer: Drawer(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: DrawerHeader(
-                curve: Curves.elasticIn,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      imgLogo,
-                      width: 70,
-                      height: 70,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CustomScrollView(
+              shrinkWrap: true,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: DrawerHeader(
+                    curve: Curves.elasticIn,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          imgLogo,
+                          width: 70,
+                          height: 70,
+                        ),
+                        SizedBox(height: SizeConfig.safeBlockHorizontal * 2),
+                        Text(
+                          "Password Manager",
+                          style: Get.textTheme.titleLarge,
+                        ),
+                      ],
                     ),
-                    SizedBox(height: SizeConfig.safeBlockHorizontal * 2),
-                    Text(
-                      "Password Manager",
-                      style: Get.textTheme.titleLarge,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 10.0, top: 5.0),
+                    child: Text(
+                      "Vaults",
+                      style: Get.textTheme.titleMedium,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 10.0, top: 5.0),
-                child: Text(
-                  "Vaults",
-                  style: Get.textTheme.titleMedium,
-                ),
-              ),
-            ),
-            SliverList.builder(
-              itemCount:
-                  objectBox.getVaultsList().isNotEmpty ? objectBox.getVaultsList().length : 0,
-              itemBuilder: (context, index) {
-                VaultModel model = objectBox.getVaultsList()[index];
-                return FutureBuilder<bool>(
-                  future: controller.isSelectedVault(model),
-                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                    return ListTile(
-                      selected: snapshot.data!,
-                      contentPadding: const EdgeInsetsDirectional.only(start: 10),
-                      leading: ProfilePicture(
-                          name: model.name!,
-                          radius: 30,
-                          fontsize: Get.textTheme.bodyLarge!.fontSize!),
-                      trailing: IconButton(
-                          iconSize: 24,
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert_rounded)),
-                      horizontalTitleGap: 10,
-                      minVerticalPadding: 10,
-                      title: Text(
-                        "${model.name}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        "${model.name}",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      onTap: () {
-                        performHapticFeedback();
-                        prefs().setInt(prefSelectedVaultId, model.id);
-                        Get.back();
+                SliverList.builder(
+                  itemCount:
+                      objectBox.getVaultsList().isNotEmpty ? objectBox.getVaultsList().length : 0,
+                  itemBuilder: (context, index) {
+                    VaultModel model = objectBox.getVaultsList()[index];
+                    return FutureBuilder<bool>(
+                      future: controller.isSelectedVault(model),
+                      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                        return ListTile(
+                          selected: snapshot.data!,
+                          contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                          leading: ProfilePicture(
+                              name: model.name!,
+                              radius: 30,
+                              fontsize: Get.textTheme.bodyLarge!.fontSize!),
+                          trailing: IconButton(
+                              iconSize: 24,
+                              onPressed: () {},
+                              icon: const Icon(Icons.more_vert_rounded)),
+                          horizontalTitleGap: 10,
+                          minVerticalPadding: 10,
+                          title: Text(
+                            "${model.name}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            "${model.name}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            performHapticFeedback();
+                            prefs().setInt(prefSelectedVaultId, model.id);
+                            Get.back();
+                          },
+                        );
                       },
                     );
                   },
-                );
-              },
+                ),
+              ],
             ),
-            const SliverToBoxAdapter(
-              child: Spacer(),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: getCustomSizedButton(
+                text: "create vault",
+                buttonType: EasyButtonType.outlined,
+                height: 40,
+                contentGap: 6.0,
+                progressStrokeWidth: 2.0,
+                onButtonPressed: () {
+                  Get.back();
+                  performHapticFeedback();
+                  Get.bottomSheet(const GeneratePasswordBottomSheetView());
+                },
+              ),
             ),
           ],
         ),

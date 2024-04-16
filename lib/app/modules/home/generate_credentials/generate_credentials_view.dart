@@ -141,7 +141,6 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
                   text: "pick registered email",
                   onButtonPressed: () {
                     performHapticFeedback();
-                    Get.bottomSheet(const GeneratePasswordBottomSheetView());
                   },
                   fullWidth: true,
                 );
