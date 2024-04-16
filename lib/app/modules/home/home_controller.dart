@@ -14,13 +14,13 @@ class HomeController extends GetxController {
   String getTextForSubtitle(CredentialsModel data) {
     switch (CredentialType.values.byName(data.credType!)) {
       case CredentialType.login:
-        return EncryptionUtils.decryptAES(data.email!);
+        return EncryptionUtils().decryptAES(data.email!);
       case CredentialType.card:
-        return EncryptionUtils.decryptAES(data.cardNumber!);
+        return EncryptionUtils().decryptAES(data.cardNumber!);
       case CredentialType.alias:
-        return EncryptionUtils.decryptAES(data.email!);
+        return EncryptionUtils().decryptAES(data.email!);
       case CredentialType.note:
-        return EncryptionUtils.decryptAES(data.notes!);
+        return EncryptionUtils().decryptAES(data.notes!);
     }
   }
 

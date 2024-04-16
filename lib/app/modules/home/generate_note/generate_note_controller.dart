@@ -22,8 +22,8 @@ class GenerateNoteController extends GetxController {
       objectBox.addCredential(CredentialsModel(
         credType: CredentialType.note.name,
         vaultId: id.toString(),
-        name: EncryptionUtils.encryptAES(titleController.text),
-        notes: EncryptionUtils.encryptAES(noteController.text),
+        name: EncryptionUtils().encryptAES(titleController.text),
+        notes: EncryptionUtils().encryptAES(noteController.text),
         createdAt: dateTime,
         updatedAt: dateTime,
       ));

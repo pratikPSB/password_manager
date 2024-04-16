@@ -1,67 +1,30 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:password_manager/app/data/utils/constants.dart';
 
-/*class EncryptData {
-  static String encryptAES(encKey, plainText) {
-    Encrypted? encrypted;
-    final key = Key.fromUtf8(encKey);
-    final iv = IV.fromLength(16);
-    final encrypter = Encrypter(AES(key));
-    encrypted = encrypter.encrypt(plainText, iv: iv);
-    return encrypted.base64;
-  }
-
-  static decryptAES(encKey, encryptedText) {
-    final Uint8List encryptedBytesWithSalt = base64.decode(encryptedText);
-    final key = Key.fromUtf8(encKey);
-    final iv = IV.fromLength(16);
-    final encrypter = Encrypter(AES(key));
-    return encrypter.decrypt(Encrypted.fromBase64(encryptedText), iv: iv);
-  }
-}*/
-
 class EncryptionUtils {
-  static late encrypt.IV iv;
-  late String aesEncryptionKey;
-  static late encrypt.Encrypter encrypter;
+  late encrypt.Encrypter _encrypter;
+  late final encrypt.IV _iv;
 
-  // Private constructor
-  EncryptionUtils._() {
-    aesEncryptionKey = finalKey;
-    iv = encrypt.IV.fromUtf8(aesEncryptionKey);
-    encrypter = encrypt.Encrypter(encrypt.AES(encrypt.Key.fromUtf8(aesEncryptionKey),
-        mode: encrypt.AESMode.ctr, padding: null));
+  static final EncryptionUtils _instance = EncryptionUtils._internal();
+
+  factory EncryptionUtils() {
+    return _instance;
   }
 
-  // Public factory method to initialize the class
-  static Future<void> initialize() async {
-    await _getInstance()._initialize();
+  EncryptionUtils._internal() {
+    _encrypter = encrypt.Encrypter(encrypt.AES(encrypt.Key.fromUtf8(finalKey), padding: null));
+    _iv = encrypt.IV.fromUtf8(finalKey.substring(5, 5 + 16));
   }
 
-  Future<void> _initialize() async {
-    aesEncryptionKey = finalKey;
-    iv = encrypt.IV.fromUtf8(aesEncryptionKey);
-    encrypter = encrypt.Encrypter(encrypt.AES(encrypt.Key.fromUtf8(aesEncryptionKey),
-        mode: encrypt.AESMode.ctr, padding: null));
+  String encryptAES(String plainText) {
+    final encrypted = _encrypter.encrypt(plainText, iv: _iv);
+    return base64.encode(encrypted.bytes);
   }
 
-  // Private method to get the instance of EncryptionUtils
-  static EncryptionUtils _getInstance() {
-    return EncryptionUtils._();
-  }
-
-  static String encryptAES(String text) => encrypter.encrypt(text, iv: iv).base64;
-
-  static String decryptAES(String encrypted) {
-    final Uint8List encryptedBytesWithSalt = base64.decode(encrypted);
-    final Uint8List encryptedBytes = encryptedBytesWithSalt.sublist(
-      0,
-      encryptedBytesWithSalt.length,
-    );
-    final String decrypted = encrypter.decrypt64(base64.encode(encryptedBytes), iv: iv);
+  String decryptAES(String encryptedText) {
+    final decrypted = _encrypter.decrypt64(encryptedText, iv: _iv);
     return decrypted;
   }
 }

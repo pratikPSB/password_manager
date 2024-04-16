@@ -3,6 +3,7 @@ import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/db/VaultModel.dart';
 import 'package:password_manager/app/data/resources/assets.dart';
+import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
@@ -88,6 +89,8 @@ class HomeView extends GetView<HomeController> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       onTap: () {
+                        performHapticFeedback();
+                        prefs().setInt(prefSelectedVaultId, model.id);
                         Get.back();
                       },
                     );

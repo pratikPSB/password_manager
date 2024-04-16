@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
 
 import 'app/data/resources/size_config.dart';
 import 'app/data/resources/strings.dart';
@@ -15,7 +14,6 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   objectBox = await ObjectBox.create();
-  EncryptionUtils.initialize();
   runApp(const MainApp());
 }
 
