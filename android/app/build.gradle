@@ -61,4 +61,12 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+configurations {
+    debugImplementation {
+        exclude group: 'io.objectbox', module: 'objectbox-android'
+    }
+}
+
+dependencies {
+    debugImplementation("io.objectbox:objectbox-android-objectbrowser:3.8.0")
+}

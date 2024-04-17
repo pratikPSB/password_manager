@@ -31,11 +31,7 @@ class GenerateCredentialsController extends GetxController {
   final RxBool isShowButtons = false.obs;
   final RxString showWhichButton = "EMAIL".obs;
 
-  RxString title = "".obs;
-  RxString email = "".obs;
-  RxString password = "".obs;
-  RxString website = "".obs;
-  RxString note = "".obs;
+  CredentialsModel? arguments = Get.arguments;
 
   void updateIsHidePassword(bool isHidePassword) {
     this.isHidePassword.value = isHidePassword;
@@ -47,29 +43,17 @@ class GenerateCredentialsController extends GetxController {
     super.onInit();
     initTextControllers();
     addFocusNodeListeners();
+
+    if (arguments != null) {
+      titleController.text = arguments!.name!;
+      emailController.text = EncryptionUtils().decryptAES(arguments!.email!);
+      pwdController.text = EncryptionUtils().decryptAES(arguments!.password!);
+      websiteController.text = arguments!.websites![0];
+      noteController.text = EncryptionUtils().decryptAES(arguments!.notes!);
+    }
   }
 
   initTextControllers() {
-    titleController.addListener(() {
-      title.value = titleController.text;
-    });
-
-    emailController.addListener(() {
-      email.value = emailController.text;
-    });
-
-    pwdController.addListener(() {
-      password.value = pwdController.text;
-    });
-
-    websiteController.addListener(() {
-      website.value = websiteController.text;
-    });
-
-    noteController.addListener(() {
-      note.value = noteController.text;
-    });
-
     stream = Get.find<GeneratePasswordBottomSheetController>().password.listen((password) {
       pwdController.text = password;
     });
@@ -92,17 +76,31 @@ class GenerateCredentialsController extends GetxController {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
       int id = await prefs().getInt(prefSelectedVaultId);
       DateTime dateTime = DateTime.now();
-      objectBox.addCredential(CredentialsModel(
-        vaultId: id.toString(),
-        credType: CredentialType.login.name,
-        name: titleController.text,
-        email: EncryptionUtils().encryptAES(emailController.text),
-        password: EncryptionUtils().encryptAES(pwdController.text),
-        websites: [websiteController.text],
-        notes: EncryptionUtils().encryptAES(noteController.text),
-        createdAt: dateTime,
-        updatedAt: dateTime,
-      ));
+      if (arguments != null) {
+        CredentialsModel model = arguments!.copyWith(
+          vaultId: id.toString(),
+          name: titleController.text,
+          email: EncryptionUtils().encryptAES(emailController.text),
+          password: EncryptionUtils().encryptAES(pwdController.text),
+          websites: [websiteController.text],
+          notes: EncryptionUtils().encryptAES(noteController.text),
+          updatedAt: dateTime,
+        );
+        model.id = arguments!.id;
+        objectBox.addCredential(model);
+      } else {
+        objectBox.addCredential(CredentialsModel(
+          vaultId: id.toString(),
+          credType: CredentialType.login.name,
+          name: titleController.text,
+          email: EncryptionUtils().encryptAES(emailController.text),
+          password: EncryptionUtils().encryptAES(pwdController.text),
+          websites: [websiteController.text],
+          notes: EncryptionUtils().encryptAES(noteController.text),
+          createdAt: dateTime,
+          updatedAt: dateTime,
+        ));
+      }
       Get.back();
     }
   }

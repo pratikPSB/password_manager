@@ -33,28 +33,58 @@ class GenerateCardCredentialsController extends GetxController {
   final TextEditingController noteController = TextEditingController();
   final FocusNode noteNode = FocusNode();
 
+  CredentialsModel? arguments = Get.arguments;
+
+  @override
+  onInit() {
+    super.onInit();
+    if (arguments != null) {
+      titleController.text = arguments!.name!;
+      nameOnCardController.text = EncryptionUtils().decryptAES(arguments!.nameOnCard!);
+      cardNumberController.text = EncryptionUtils().decryptAES(arguments!.cardNumber!);
+      expDateController.text = EncryptionUtils().decryptAES(arguments!.expiryDate!);
+      cvvController.text = EncryptionUtils().decryptAES(arguments!.cvvCode!);
+      cardPinController.text = EncryptionUtils().decryptAES(arguments!.cardPin!);
+      noteController.text = EncryptionUtils().decryptAES(arguments!.notes!);
+    }
+  }
+
   insertCardToDB() async {
     performHapticFeedback();
     if (formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
       int id = await prefs().getInt(prefSelectedVaultId);
       DateTime dateTime = DateTime.now();
-      objectBox.addCredential(CredentialsModel(
-        vaultId: id.toString(),
-        name: titleController.text,
-        nameOnCard: EncryptionUtils().encryptAES(nameOnCardController.text),
-        credType: CredentialType.card.name,
-        cardNumber: EncryptionUtils().encryptAES(cardNumberController.text),
-        expiryDate: EncryptionUtils().encryptAES(expDateController.text),
-        cvvCode: EncryptionUtils().encryptAES(cvvController.text),
-        cardPin: EncryptionUtils().encryptAES(cardPinController.text),
-        notes: EncryptionUtils().encryptAES(noteController.text),
-        createdAt: dateTime,
-        updatedAt: dateTime,
-      ));
+      if (arguments != null) {
+        CredentialsModel model = arguments!.copyWith(
+          vaultId: id.toString(),
+          name: titleController.text,
+          nameOnCard: EncryptionUtils().encryptAES(nameOnCardController.text),
+          cardNumber: EncryptionUtils().encryptAES(cardNumberController.text),
+          expiryDate: EncryptionUtils().encryptAES(expDateController.text),
+          cvvCode: EncryptionUtils().encryptAES(cvvController.text),
+          cardPin: EncryptionUtils().encryptAES(cardPinController.text),
+          notes: EncryptionUtils().encryptAES(noteController.text),
+          updatedAt: dateTime,
+        );
+        model.id = arguments!.id;
+        objectBox.addCredential(model);
+      } else {
+        objectBox.addCredential(CredentialsModel(
+          vaultId: id.toString(),
+          name: titleController.text,
+          nameOnCard: EncryptionUtils().encryptAES(nameOnCardController.text),
+          credType: CredentialType.card.name,
+          cardNumber: EncryptionUtils().encryptAES(cardNumberController.text),
+          expiryDate: EncryptionUtils().encryptAES(expDateController.text),
+          cvvCode: EncryptionUtils().encryptAES(cvvController.text),
+          cardPin: EncryptionUtils().encryptAES(cardPinController.text),
+          notes: EncryptionUtils().encryptAES(noteController.text),
+          createdAt: dateTime,
+          updatedAt: dateTime,
+        ));
+      }
       Get.back();
     }
   }
-
-
 }

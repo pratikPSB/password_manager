@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:password_manager/app/data/db/CredentialsModel.dart';
 import 'package:password_manager/app/data/db/VaultModel.dart';
 import 'package:path/path.dart';
@@ -10,8 +11,21 @@ class ObjectBox {
 
   late final Box<CredentialsModel> _credentialsBox;
   late final Box<VaultModel> _vaultBox;
+  late final Admin? _admin;
+  bool _isAdminInitialized = false;
 
   ObjectBox._create(this._store) {
+    if (kDebugMode) {
+      if (_isAdminInitialized) {
+          _admin?.close();
+          _admin = null;
+          _isAdminInitialized = false;
+      }
+      if (Admin.isAvailable()) {
+        _isAdminInitialized = true;
+        _admin = Admin(_store, bindUri: "http://127.0.0.1:3122");
+      }
+    }
     _credentialsBox = Box<CredentialsModel>(_store);
     _vaultBox = Box<VaultModel>(_store);
   }

@@ -156,3 +156,41 @@ TextStyle titleTextStyle = const TextStyle(
   fontSize: 25,
   fontWeight: FontWeight.bold,
 );
+
+AlertDialog buildAlertDialog(
+  String title,
+  String message, {
+  String positiveButtonText = "",
+  String negativeButtonText = "",
+  void Function()? positiveClick,
+  void Function()? negativeClick,
+}) {
+  return AlertDialog(
+    title: Text(title),
+    content: Text(message),
+    actions: <Widget>[
+      if (negativeButtonText.isNotEmpty)
+        TextButton(
+          onPressed: () {
+            performHapticFeedback();
+            if (Get.isDialogOpen ?? false) {
+              Get.back();
+            }
+            negativeClick?.call();
+          },
+          child: Text(negativeButtonText),
+        ),
+      if (positiveButtonText.isNotEmpty)
+        TextButton(
+          onPressed: () {
+            performHapticFeedback();
+            if (Get.isDialogOpen ?? false) {
+              Get.back();
+            }
+            positiveClick?.call();
+          },
+          child: Text(positiveButtonText),
+        ),
+    ],
+  );
+}

@@ -140,28 +140,42 @@ class HomeView extends GetView<HomeController> {
           key: controller.lvbCredentialsKey,
           itemCount: snapshot.hasData ? snapshot.data?.length : 0,
           itemBuilder: (context, index) {
+            CredentialsModel model = snapshot.data![index];
             return ListTile(
               contentPadding: const EdgeInsetsDirectional.only(start: 10),
               leading: ProfilePicture(
-                  name: snapshot.data![index].name!,
-                  radius: 30,
-                  fontsize: Get.textTheme.bodyLarge!.fontSize!),
+                  name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
               trailing: IconButton(
                 iconSize: 24,
                 icon: const Icon(Icons.more_vert_rounded),
-                onPressed: () {
+                onPressed: () async {
                   performHapticFeedback();
+                  bool isAuthenticated = await controller.authenticate();
+                  if (isAuthenticated) {
+                    Get.dialog(
+                      buildAlertDialog(
+                        model.name!,
+                        controller.getTextForSubtitle(model),
+                        negativeButtonText: "Edit",
+                        negativeClick: () {
+                          controller.handleEdit(model);
+                        },
+                      ),
+                    );
+                    Future.delayed(const Duration(seconds: 10),
+                        () => (Get.isDialogOpen ?? false) ? Get.back() : ());
+                  }
                 },
               ),
               horizontalTitleGap: 10,
               minVerticalPadding: 10,
               title: Text(
-                "${snapshot.data?[index].name}",
+                "${model.name}",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               subtitle: Text(
-                controller.getTextForSubtitle(snapshot.data![index]),
+                controller.getTextForSubtitle(model),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
