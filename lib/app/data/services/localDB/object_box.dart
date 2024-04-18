@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:password_manager/app/data/db/CredentialsModel.dart';
-import 'package:password_manager/app/data/db/VaultModel.dart';
+import 'package:password_manager/app/data/db/credentials_model.dart';
+import 'package:password_manager/app/data/db/vault_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 

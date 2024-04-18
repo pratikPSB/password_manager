@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:objectbox/objectbox.dart';
 
-part 'CredentialsModel.g.dart';
+part 'credentials_model.g.dart';
 
 /// vaultId : "0000"
 /// credType : "Login"

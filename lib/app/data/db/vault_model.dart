@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:objectbox/objectbox.dart';
 
-part 'VaultModel.g.dart';
+part 'vault_model.g.dart';
 
 @Entity()
 @JsonSerializable()

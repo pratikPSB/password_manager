@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../main.dart';
-import '../../../data/db/CredentialsModel.dart';
+import '../../../data/db/credentials_model.dart';
 import '../../../data/utils/constants.dart';
 import '../../../data/utils/encrypt_decrypt.dart';
 import '../../../data/utils/extensions.dart';

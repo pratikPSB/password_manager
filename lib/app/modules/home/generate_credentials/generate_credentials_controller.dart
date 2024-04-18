@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/CredentialsModel.dart';
+import 'package:password_manager/app/data/db/credentials_model.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/app/modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_controller.dart';
 import 'package:password_manager/main.dart';

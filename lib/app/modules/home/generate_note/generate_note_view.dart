@@ -24,6 +24,7 @@ class GenerateNoteView extends GetView<GenerateNoteController> {
                 contentPadding: EdgeInsets.zero,
                 labelStyle: titleTextStyle,
                 hintStyle: titleTextStyle,
+                alignLabelWithHint: true,
               ),
               style: titleTextStyle,
               controller: controller.titleController,
@@ -42,6 +43,7 @@ class GenerateNoteView extends GetView<GenerateNoteController> {
                 decoration: getCommonInputDecoration("Note").copyWith(
                   contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
+                  alignLabelWithHint: true,
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                 ),
                 controller: controller.noteController,

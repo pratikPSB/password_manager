@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/VaultModel.dart';
+import 'package:password_manager/app/data/db/vault_model.dart';
 import 'package:password_manager/app/data/resources/assets.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
@@ -10,7 +10,7 @@ import 'package:password_manager/app/routes/app_pages.dart';
 
 import '../../../main.dart';
 import '../../data/customClasses/easy_button.dart';
-import '../../data/db/CredentialsModel.dart';
+import '../../data/db/credentials_model.dart';
 import '../../data/resources/size_config.dart';
 import '../../data/utils/widgets.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
@@ -115,10 +115,12 @@ class HomeView extends GetView<HomeController> {
                 height: 40,
                 contentGap: 6.0,
                 progressStrokeWidth: 2.0,
-                onButtonPressed: () {
+                onButtonPressed: () async {
                   Get.back();
                   performHapticFeedback();
-                  Get.bottomSheet(const GeneratePasswordBottomSheetView());
+                  await Future.delayed(const Duration(milliseconds: 250), () {
+                    Go.toNamed(Routes.CREATE_VAULT);
+                  });
                 },
               ),
             ),

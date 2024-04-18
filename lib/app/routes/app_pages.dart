@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/home/create_vault/create_vault_binding.dart';
+import '../modules/home/create_vault/create_vault_view.dart';
 import '../modules/home/generate_card_credentials/generate_card_credentials_binding.dart';
 import '../modules/home/generate_card_credentials/generate_card_credentials_view.dart';
 import '../modules/home/generate_credentials/generate_credentials_binding.dart';
@@ -55,6 +57,11 @@ class AppPages {
           page: () => const GenerateNoteView(),
           binding: GenerateNoteBinding(),
           transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: _Paths.CREATE_VAULT,
+          page: () => const CreateVaultView(),
+          binding: CreateVaultBinding(),
         ),
       ],
     ),

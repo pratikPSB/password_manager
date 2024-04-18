@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/VaultModel.dart';
+import 'package:password_manager/app/data/db/vault_model.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/main.dart';
 
@@ -19,7 +19,7 @@ class RegisterController extends GetxController {
     if (objectBox.getVaultsList().isEmpty) {
       int id = await objectBox.addVault(VaultModel(
           name: "Personal",
-          vaultColor: "#232323",
+          vaultColor: "#9ECAff",
           createdAt: DateTime.now(),
           updatedAt: DateTime.now()));
       prefs().setInt(prefSelectedVaultId, id);

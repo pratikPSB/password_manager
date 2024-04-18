@@ -11,6 +11,7 @@ Widget _getButton(
     required EasyButtonType buttonType,
     required Function() onButtonPressed,
     required bool fullWidth}) {
+  printDebug(Get.theme.colorScheme.primary.toString());
   return EasyButton(
     onPressed: onButtonPressed,
     type: buttonType,
@@ -146,7 +147,6 @@ InputDecoration getCommonInputDecoration(String labelText, {String hintText = ""
   return InputDecoration(
       labelText: labelText,
       hintText: (hintText.isEmpty) ? labelText : hintText,
-      alignLabelWithHint: true,
       border: OutlineInputBorder(borderRadius: 100.modifyCorners()),
       floatingLabelAlignment: FloatingLabelAlignment.center,
       floatingLabelBehavior: FloatingLabelBehavior.auto);

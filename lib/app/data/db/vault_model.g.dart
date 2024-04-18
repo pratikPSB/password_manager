@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'VaultModel.dart';
+part of 'vault_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
