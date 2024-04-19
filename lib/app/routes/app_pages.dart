@@ -62,6 +62,7 @@ class AppPages {
           name: _Paths.CREATE_VAULT,
           page: () => const CreateVaultView(),
           binding: CreateVaultBinding(),
+          transition: Transition.downToUp,
         ),
       ],
     ),

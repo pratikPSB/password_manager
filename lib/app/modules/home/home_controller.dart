@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -16,7 +18,27 @@ class HomeController extends GetxController {
   final streamCredentials = objectBox.getCredentials();
   final lvbCredentialsKey = const PageStorageKey("keep credentials alive");
 
-  final LocalAuthentication auth = LocalAuthentication();
+  final LocalAuthentication _auth = LocalAuthentication();
+
+  late StreamSubscription<List<VaultModel>> _vaultListStream;
+  Rxn<List<VaultModel>> vaultList = Rxn<List<VaultModel>>();
+  RxInt selectedVault = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchSelectedVaultId();
+    _vaultListStream = objectBox.getVaults().listen((event) {
+      vaultList.value?.clear();
+      vaultList.value?.addAll(event);
+    });
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    _vaultListStream.cancel();
+  }
 
   String getTextForSubtitle(CredentialsModel data) {
     switch (CredentialType.values.byName(data.credType!)) {
@@ -31,14 +53,13 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<bool> isSelectedVault(VaultModel model) async {
-    int selectedId = await prefs().getInt(prefSelectedVaultId);
-    return model.id == selectedId;
+  fetchSelectedVaultId() async {
+    selectedVault.value = await prefs().getInt(prefSelectedVaultId);
   }
 
   Future<bool> authenticate() async {
     try {
-      return await auth.authenticate(
+      return await _auth.authenticate(
         localizedReason: 'to view the credentials please authenticate your identity.',
         options: const AuthenticationOptions(
           sensitiveTransaction: true,
