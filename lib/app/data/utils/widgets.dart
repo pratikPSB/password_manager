@@ -157,9 +157,9 @@ TextStyle titleTextStyle = const TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-AlertDialog buildAlertDialog(
-  String title,
-  String message, {
+AlertDialog buildAlertDialog({
+  required String title,
+  required dynamic message,
   String positiveButtonText = "",
   String negativeButtonText = "",
   void Function()? positiveClick,
@@ -167,7 +167,7 @@ AlertDialog buildAlertDialog(
 }) {
   return AlertDialog(
     title: Text(title),
-    content: Text(message),
+    content: (message is String) ? Text(message) : message,
     actions: <Widget>[
       if (negativeButtonText.isNotEmpty)
         TextButton(
@@ -192,5 +192,35 @@ AlertDialog buildAlertDialog(
           child: Text(positiveButtonText),
         ),
     ],
+  );
+}
+
+Widget getImageView({
+  required String assetPath,
+  required String bgColor,
+  bool isSelected = false,
+  double margin = 0,
+}) {
+  return Container(
+    width: 50,
+    height: 50,
+    margin: EdgeInsets.all(margin),
+    alignment: AlignmentDirectional.center,
+    decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(bgColor.getColorHexFromStr()).withOpacity(0.25),
+        border: isSelected
+            ? Border.all(
+                color: Color(bgColor.getColorHexFromStr()).withOpacity(0.75),
+                strokeAlign: BorderSide.strokeAlignOutside,
+                width: 2,
+              )
+            : null),
+    child: Image.asset(
+      assetPath,
+      width: 25,
+      height: 25,
+      color: Color(bgColor.getColorHexFromStr()),
+    ),
   );
 }

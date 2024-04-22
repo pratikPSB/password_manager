@@ -32,7 +32,7 @@ class CreateVaultView extends GetView<CreateVaultController> {
                     () => getImageView(
                       assetPath: controller.selectedIconPath.value,
                       bgColor: controller.selectedColorString.value,
-                      isSelected: true,
+                      isSelected: false,
                     ),
                   ),
                   SizedBox(width: SizeConfig.safeBlockHorizontal * 3),
@@ -147,31 +147,6 @@ class CreateVaultView extends GetView<CreateVaultController> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget getImageView(
-      {required String assetPath, required String bgColor, bool isSelected = false}) {
-    return Container(
-      height: 50,
-      width: 50,
-      alignment: AlignmentDirectional.center,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Color(bgColor.getColorHexFromStr()).withOpacity(0.25),
-          border: isSelected
-              ? Border.all(
-                  color: Color(bgColor.getColorHexFromStr()).withOpacity(0.75),
-                  strokeAlign: BorderSide.strokeAlignOutside,
-                  width: 2,
-                )
-              : null),
-      child: Image.asset(
-        assetPath,
-        width: 25,
-        height: 25,
-        color: Color(bgColor.getColorHexFromStr()),
       ),
     );
   }

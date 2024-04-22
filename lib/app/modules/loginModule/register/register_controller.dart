@@ -5,6 +5,7 @@ import 'package:password_manager/app/data/db/vault_model.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/main.dart';
 
+import '../../../data/resources/assets.dart';
 import '../../../data/utils/extensions.dart';
 import '../../../data/utils/go.dart';
 import '../../../routes/app_pages.dart';
@@ -19,6 +20,7 @@ class RegisterController extends GetxController {
     if (objectBox.getVaultsList().isEmpty) {
       int id = await objectBox.addVault(VaultModel(
           name: "Personal",
+          iconPath: CustomIcons.phone,
           vaultColor: "#9ECAff",
           createdAt: DateTime.now(),
           updatedAt: DateTime.now()));

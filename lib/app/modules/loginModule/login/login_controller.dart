@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../main.dart';
 import '../../../data/db/vault_model.dart';
+import '../../../data/resources/assets.dart';
 import '../../../data/utils/constants.dart';
 import '../../../data/utils/extensions.dart';
 import '../../../data/utils/go.dart';
@@ -22,6 +23,7 @@ class LoginController extends GetxController {
     if (objectBox.getVaultsList().isEmpty) {
       int id = await objectBox.addVault(VaultModel(
           name: "Personal",
+          iconPath: CustomIcons.phone,
           vaultColor: "#9ECAff",
           createdAt: DateTime.now(),
           updatedAt: DateTime.now()));

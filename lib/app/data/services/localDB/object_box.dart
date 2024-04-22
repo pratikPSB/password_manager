@@ -43,6 +43,11 @@ class ObjectBox {
     return builder.watch(triggerImmediately: true).map((query) => query.find());
   }
 
+  Stream<List<CredentialsModel>> getCredentialsByVaultId(String vaultId){
+    final builder = _credentialsBox.query(CredentialsModel_.vaultId.equals(vaultId)).order(CredentialsModel_.id, flags: Order.descending);
+    return builder.watch(triggerImmediately: true).map((query) => query.find());
+  }
+
   //add new credential
   Future<void> addCredential(CredentialsModel post) => _credentialsBox.putAsync(post);
 
@@ -53,6 +58,10 @@ class ObjectBox {
   Stream<List<VaultModel>> getVaults() {
     final builder = _vaultBox.query();
     return builder.watch(triggerImmediately: true).map((query) => query.find());
+  }
+
+  VaultModel getVaultById(int id) {
+    return _vaultBox.query(VaultModel_.id.equals(id)).build().findFirst()!;
   }
 
   List<VaultModel> getVaultsList() {

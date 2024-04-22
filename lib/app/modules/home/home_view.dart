@@ -8,6 +8,7 @@ import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
 
+import '../../data/customClasses/copy_text_view.dart';
 import '../../data/customClasses/easy_button.dart';
 import '../../data/db/credentials_model.dart';
 import '../../data/resources/size_config.dart';
@@ -24,6 +25,17 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         title: const Text('Password Manager'),
         centerTitle: true,
+        leading: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: Scaffold.of(context).openDrawer,
+              child: Obx(() => getImageView(
+                  assetPath: controller.selectedVault.value.iconPath!,
+                  bgColor: controller.selectedVault.value.vaultColor!,
+                  margin: 8)),
+            );
+          },
+        ),
       ),
       drawer: Drawer(
         child: Column(
@@ -62,44 +74,52 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                 ),
-                SliverList.builder(
-                  itemCount:
-                      controller.vaultList.value!.isNotEmpty ? controller.vaultList.value!.length : 0,
-                  itemBuilder: (context, index) {
-                    VaultModel model = controller.vaultList.value![index];
-                    return Obx(
-                      () => ListTile(
-                        selected: model.id == controller.selectedVault.value,
-                        contentPadding: const EdgeInsetsDirectional.only(start: 10),
-                        leading: ProfilePicture(
-                            name: model.name!,
-                            radius: 30,
-                            fontsize: Get.textTheme.bodyLarge!.fontSize!),
-                        trailing: IconButton(
-                            iconSize: 24,
-                            onPressed: () {},
-                            icon: const Icon(Icons.more_vert_rounded)),
-                        horizontalTitleGap: 10,
-                        minVerticalPadding: 10,
-                        title: Text(
-                          "${model.name}",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                Obx(
+                  () => SliverList.builder(
+                    itemCount: controller.vaultList.value.isNotEmpty
+                        ? controller.vaultList.value.length
+                        : 0,
+                    itemBuilder: (context, index) {
+                      VaultModel model = controller.vaultList.value[index];
+                      return Obx(
+                        () => ListTile(
+                          selected: model.id == controller.selectedVaultId.value,
+                          contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                          leading: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: getImageView(
+                              assetPath: model.iconPath!,
+                              bgColor: model.vaultColor!,
+                            ),
+                          ),
+                          trailing: IconButton(
+                              iconSize: 24,
+                              onPressed: () {},
+                              icon: const Icon(Icons.more_vert_rounded)),
+                          horizontalTitleGap: 10,
+                          minVerticalPadding: 10,
+                          title: Text(
+                            "${model.name}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            "${model.name}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () async {
+                            performHapticFeedback();
+                            prefs().setInt(prefSelectedVaultId, model.id);
+                            await controller.fetchSelectedVault();
+                            Get.back();
+                            controller.updateCredentialStream();
+                          },
                         ),
-                        subtitle: Text(
-                          "${model.name}",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onTap: () {
-                          performHapticFeedback();
-                          prefs().setInt(prefSelectedVaultId, model.id);
-                          controller.selectedVault.value = model.id;
-                          Get.back();
-                        },
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -133,28 +153,48 @@ class HomeView extends GetView<HomeController> {
         tooltip: "Add password",
         child: const Icon(Icons.add),
       ),
-      body: StreamBuilder<List<CredentialsModel>>(
-        stream: controller.streamCredentials,
-        builder: (context, snapshot) => ListView.builder(
-          key: controller.lvbCredentialsKey,
-          itemCount: snapshot.hasData ? snapshot.data?.length : 0,
-          itemBuilder: (context, index) {
-            CredentialsModel model = snapshot.data![index];
-            return ListTile(
-              contentPadding: const EdgeInsetsDirectional.only(start: 10),
-              leading: ProfilePicture(
-                  name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
-              trailing: IconButton(
-                iconSize: 24,
-                icon: const Icon(Icons.more_vert_rounded),
-                onPressed: () async {
+      body: Obx(() => ListView.builder(
+            key: controller.lvbCredentialsKey,
+            itemCount: controller.credentialsList.value.isNotEmpty
+                ? controller.credentialsList.value.length
+                : 0,
+            itemBuilder: (context, index) {
+              CredentialsModel model = controller.credentialsList.value[index];
+              return ListTile(
+                contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                leading: ProfilePicture(
+                    name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
+                trailing: IconButton(
+                  iconSize: 24,
+                  icon: const Icon(Icons.more_vert_rounded),
+                  onPressed: () async {},
+                ),
+                horizontalTitleGap: 10,
+                minVerticalPadding: 10,
+                title: Text(
+                  "${model.name}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(
+                  controller.getTextForSubtitle(model),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onTap: () async {
                   performHapticFeedback();
                   bool isAuthenticated = await controller.authenticate();
                   if (isAuthenticated) {
                     Get.dialog(
                       buildAlertDialog(
-                        model.name!,
-                        controller.getTextForSubtitle(model),
+                        title: model.name!,
+                        message: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CopyTextView(text: controller.getTextForSubtitle(model)),
+                            CopyTextView(text: controller.getTextForSubtitle(model), obscureText: true),
+                          ],
+                        ),
                         negativeButtonText: "Edit",
                         negativeClick: () {
                           controller.handleEdit(model);
@@ -165,24 +205,9 @@ class HomeView extends GetView<HomeController> {
                         () => (Get.isDialogOpen ?? false) ? Get.back() : ());
                   }
                 },
-              ),
-              horizontalTitleGap: 10,
-              minVerticalPadding: 10,
-              title: Text(
-                "${model.name}",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(
-                controller.getTextForSubtitle(model),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              onTap: () {},
-            );
-          },
-        ),
-      ),
+              );
+            },
+          )),
     );
   }
 

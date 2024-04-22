@@ -15,22 +15,27 @@ import '../../data/utils/go.dart';
 import '../../routes/app_pages.dart';
 
 class HomeController extends GetxController {
-  final streamCredentials = objectBox.getCredentials();
+  late StreamSubscription<List<VaultModel>> _vaultListStream;
+  Rx<List<VaultModel>> vaultList = Rx<List<VaultModel>>(objectBox.getVaultsList());
+  RxInt selectedVaultId = 0.obs;
+  Rx<VaultModel> selectedVault = Rx<VaultModel>(objectBox.getVaultsList().first);
+
+  late StreamSubscription<List<CredentialsModel>> _credentialsStream;
+  Rx<List<CredentialsModel>> credentialsList = Rx<List<CredentialsModel>>([]);
   final lvbCredentialsKey = const PageStorageKey("keep credentials alive");
 
   final LocalAuthentication _auth = LocalAuthentication();
 
-  late StreamSubscription<List<VaultModel>> _vaultListStream;
-  Rxn<List<VaultModel>> vaultList = Rxn<List<VaultModel>>();
-  RxInt selectedVault = 0.obs;
-
   @override
   void onInit() {
     super.onInit();
-    fetchSelectedVaultId();
+    fetchSelectedVault();
     _vaultListStream = objectBox.getVaults().listen((event) {
-      vaultList.value?.clear();
-      vaultList.value?.addAll(event);
+      vaultList.value = event;
+    });
+    _credentialsStream =
+        objectBox.getCredentialsByVaultId(selectedVaultId.value.toString()).listen((event) {
+      credentialsList.value = event;
     });
   }
 
@@ -38,6 +43,15 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
     _vaultListStream.cancel();
+    _credentialsStream.cancel();
+  }
+
+  updateCredentialStream() {
+    _credentialsStream.cancel();
+    _credentialsStream =
+        objectBox.getCredentialsByVaultId(selectedVaultId.value.toString()).listen((event) {
+      credentialsList.value = event;
+    });
   }
 
   String getTextForSubtitle(CredentialsModel data) {
@@ -53,8 +67,9 @@ class HomeController extends GetxController {
     }
   }
 
-  fetchSelectedVaultId() async {
-    selectedVault.value = await prefs().getInt(prefSelectedVaultId);
+  fetchSelectedVault() async {
+    selectedVaultId.value = await prefs().getInt(prefSelectedVaultId);
+    selectedVault.value = objectBox.getVaultById(selectedVaultId.value);
   }
 
   Future<bool> authenticate() async {
@@ -68,6 +83,7 @@ class HomeController extends GetxController {
       );
     } on PlatformException catch (e) {
       printDebug(e);
+      // return true;
       return false;
     }
   }
