@@ -20,34 +20,33 @@ class HomeController extends GetxController {
   RxInt selectedVaultId = 0.obs;
   Rx<VaultModel> selectedVault = Rx<VaultModel>(objectBox.getVaultsList().first);
 
-  late StreamSubscription<List<CredentialsModel>> _credentialsStream;
+  StreamSubscription<List<CredentialsModel>>? _credentialsStream;
   Rx<List<CredentialsModel>> credentialsList = Rx<List<CredentialsModel>>([]);
   final lvbCredentialsKey = const PageStorageKey("keep credentials alive");
+
+  final menuOptionsList = ['Edit', 'Delete'];
 
   final LocalAuthentication _auth = LocalAuthentication();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    fetchSelectedVault();
+    await fetchSelectedVault();
     _vaultListStream = objectBox.getVaults().listen((event) {
       vaultList.value = event;
     });
-    _credentialsStream =
-        objectBox.getCredentialsByVaultId(selectedVaultId.value.toString()).listen((event) {
-      credentialsList.value = event;
-    });
+    updateCredentialStream();
   }
 
   @override
   void onClose() {
     super.onClose();
     _vaultListStream.cancel();
-    _credentialsStream.cancel();
+    if(_credentialsStream != null ) _credentialsStream?.cancel();
   }
 
   updateCredentialStream() {
-    _credentialsStream.cancel();
+    if(_credentialsStream != null ) _credentialsStream?.cancel();
     _credentialsStream =
         objectBox.getCredentialsByVaultId(selectedVaultId.value.toString()).listen((event) {
       credentialsList.value = event;
@@ -83,8 +82,8 @@ class HomeController extends GetxController {
       );
     } on PlatformException catch (e) {
       printDebug(e);
-      // return true;
-      return false;
+      return true;
+      // return false;
     }
   }
 

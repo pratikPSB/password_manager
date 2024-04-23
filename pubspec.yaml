@@ -45,6 +45,14 @@ dependencies:
 #  auth
   local_auth: ^2.2.0
 
+#  firebase
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.8.0
+  firebase_crashlytics: ^3.4.9
+  firebase_auth: ^4.16.0
+  firebase_database: ^10.5.2
+  google_sign_in: ^6.2.1
+
 dev_dependencies:
   analyzer: ^6.4.1
   flutter_lints: 3.0.2

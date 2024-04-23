@@ -134,7 +134,7 @@ class CreateVaultView extends GetView<CreateVaultController> {
                   child: Obx(
                     () => getImageView(
                         assetPath: controller.iconList[index],
-                        bgColor: controller.selectedColorString.value,
+                        bgColor: "#E5E5E5",
                         isSelected: controller.selectedIconPos.value == index),
                   ),
                 );

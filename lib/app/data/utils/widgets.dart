@@ -5,6 +5,7 @@ import 'package:password_manager/app/data/resources/theme_utils.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 
 import '../customClasses/easy_button.dart';
+import '../resources/assets.dart';
 
 Widget _getButton(
     {required String text,
@@ -196,8 +197,8 @@ AlertDialog buildAlertDialog({
 }
 
 Widget getImageView({
-  required String assetPath,
-  required String bgColor,
+  required String? assetPath,
+  required String? bgColor,
   bool isSelected = false,
   double margin = 0,
 }) {
@@ -208,19 +209,19 @@ Widget getImageView({
     alignment: AlignmentDirectional.center,
     decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(bgColor.getColorHexFromStr()).withOpacity(0.25),
+        color: Color((bgColor ?? "#9ECAff").getColorHexFromStr()).withOpacity(0.25),
         border: isSelected
             ? Border.all(
-                color: Color(bgColor.getColorHexFromStr()).withOpacity(0.75),
+                color: Color((bgColor ?? "#9ECAff").getColorHexFromStr()).withOpacity(0.75),
                 strokeAlign: BorderSide.strokeAlignOutside,
                 width: 2,
               )
             : null),
     child: Image.asset(
-      assetPath,
+      assetPath ?? CustomIcons.phone,
       width: 25,
       height: 25,
-      color: Color(bgColor.getColorHexFromStr()),
+      color: Color((bgColor ?? "#9ECAff").getColorHexFromStr()),
     ),
   );
 }

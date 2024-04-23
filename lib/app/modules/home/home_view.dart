@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:password_manager/app/data/db/vault_model.dart';
 import 'package:password_manager/app/data/resources/assets.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
+import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
@@ -30,8 +31,8 @@ class HomeView extends GetView<HomeController> {
             return GestureDetector(
               onTap: Scaffold.of(context).openDrawer,
               child: Obx(() => getImageView(
-                  assetPath: controller.selectedVault.value.iconPath!,
-                  bgColor: controller.selectedVault.value.vaultColor!,
+                  assetPath: controller.selectedVault.value.iconPath,
+                  bgColor: controller.selectedVault.value.vaultColor,
                   margin: 8)),
             );
           },
@@ -89,8 +90,8 @@ class HomeView extends GetView<HomeController> {
                             width: 50,
                             height: 50,
                             child: getImageView(
-                              assetPath: model.iconPath!,
-                              bgColor: model.vaultColor!,
+                              assetPath: model.iconPath,
+                              bgColor: model.vaultColor,
                             ),
                           ),
                           trailing: IconButton(
@@ -155,19 +156,26 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Obx(() => ListView.builder(
             key: controller.lvbCredentialsKey,
-            itemCount: controller.credentialsList.value.isNotEmpty
-                ? controller.credentialsList.value.length
-                : 0,
+            itemCount: controller.credentialsList.value.length,
             itemBuilder: (context, index) {
               CredentialsModel model = controller.credentialsList.value[index];
               return ListTile(
                 contentPadding: const EdgeInsetsDirectional.only(start: 10),
                 leading: ProfilePicture(
                     name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
-                trailing: IconButton(
-                  iconSize: 24,
-                  icon: const Icon(Icons.more_vert_rounded),
-                  onPressed: () async {},
+                trailing: PopupMenuButton<String>(
+                  position: PopupMenuPosition.under,
+                  onSelected: (value) {
+                    getSnackBar(message: "$value selected");
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return controller.menuOptionsList.map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      );
+                    }).toList();
+                  },
                 ),
                 horizontalTitleGap: 10,
                 minVerticalPadding: 10,
@@ -192,7 +200,9 @@ class HomeView extends GetView<HomeController> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CopyTextView(text: controller.getTextForSubtitle(model)),
-                            CopyTextView(text: controller.getTextForSubtitle(model), obscureText: true),
+                            CopyTextView(
+                                text: EncryptionUtils().decryptAES(model.password!),
+                                obscureText: true),
                           ],
                         ),
                         negativeButtonText: "Edit",
