@@ -149,7 +149,7 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
                   text: "generate a password",
                   onButtonPressed: () {
                     performHapticFeedback();
-                    Get.bottomSheet(const GeneratePasswordBottomSheetView());
+                    Get.bottomSheet(const GeneratePasswordBottomSheetView(), backgroundColor: Get.theme.colorScheme.secondaryContainer);
                   },
                   fullWidth: true,
                 );

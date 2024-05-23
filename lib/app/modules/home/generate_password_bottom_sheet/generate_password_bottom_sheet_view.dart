@@ -16,74 +16,67 @@ class GeneratePasswordBottomSheetView extends GetView<GeneratePasswordBottomShee
     controller.createPassword();
     return Wrap(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.toDouble()), topRight: Radius.circular(30.toDouble())),
-            color: Get.theme.colorScheme.secondaryContainer,
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
-            child: Column(
-              children: [
-                Stack(
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: [
-                    const SizedBox(
-                      width: double.infinity,
-                      child: Center(child: Text("Generate Password")),
-                    ),
-                    IconButton(
-                      onPressed: controller.createPassword,
-                      icon: const Icon(Icons.refresh_rounded),
-                    )
-                  ],
-                ),
-                SizedBox(width: SizeConfig.safeBlockVertical * 3),
-                Obx(() => AutoSizeText(
-                      controller.password.value,
-                      style: Get.theme.textTheme.headlineMedium?.copyWith(letterSpacing: 1.2),
-                      maxLines: 2,
-                    )),
-                SizedBox(width: SizeConfig.safeBlockVertical),
-                Obx(() => Text(controller.pwdStrength.value)),
-                SizedBox(width: SizeConfig.safeBlockVertical * 3),
-                buildPwdLengthSliderRow(),
-                SizedBox(width: SizeConfig.safeBlockVertical * 3),
-                buildPwdSwitchRow(
-                  tileName: "Special characters (!&*)",
-                  type: SwitchType.typeSC,
-                ),
-                SizedBox(width: SizeConfig.safeBlockVertical * 3),
-                buildPwdSwitchRow(
-                  tileName: "Capital letters (A-Z)",
-                  type: SwitchType.typeCL,
-                ),
-                SizedBox(width: SizeConfig.safeBlockVertical * 3),
-                buildPwdSwitchRow(
-                  tileName: "Include numbers (0-9)",
-                  type: SwitchType.typeNM,
-                ),
-                SizedBox(width: SizeConfig.safeBlockVertical * 5),
-                getElevatedButton(
-                    text: "copy and close",
-                    onButtonPressed: () {
-                      performHapticFeedback();
-                      Clipboard.setData(ClipboardData(text: controller.password.value))
-                          .then((_) async {
-                        if (Get.isBottomSheetOpen ?? false) {
-                          Get.back();
-                        }
-                        await Future.delayed(const Duration(milliseconds: 250), () {
-                          Get.showSnackbar(getSnackBar(
-                              title: "Password", message: "copied to clipboard successfully."));
-                        });
+        Padding(
+          padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
+          child: Column(
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  const SizedBox(
+                    width: double.infinity,
+                    child: Center(child: Text("Generate Password")),
+                  ),
+                  IconButton(
+                    onPressed: controller.createPassword,
+                    icon: const Icon(Icons.refresh_rounded),
+                  )
+                ],
+              ),
+              SizedBox(width: SizeConfig.safeBlockVertical * 3),
+              Obx(() => AutoSizeText(
+                    controller.password.value,
+                    style: Get.theme.textTheme.headlineMedium?.copyWith(letterSpacing: 1.2),
+                    maxLines: 2,
+                  )),
+              SizedBox(width: SizeConfig.safeBlockVertical),
+              Obx(() => Text(controller.pwdStrength.value)),
+              SizedBox(width: SizeConfig.safeBlockVertical * 3),
+              buildPwdLengthSliderRow(),
+              SizedBox(width: SizeConfig.safeBlockVertical * 3),
+              buildPwdSwitchRow(
+                tileName: "Special characters (!&*)",
+                type: SwitchType.typeSC,
+              ),
+              SizedBox(width: SizeConfig.safeBlockVertical * 3),
+              buildPwdSwitchRow(
+                tileName: "Capital letters (A-Z)",
+                type: SwitchType.typeCL,
+              ),
+              SizedBox(width: SizeConfig.safeBlockVertical * 3),
+              buildPwdSwitchRow(
+                tileName: "Include numbers (0-9)",
+                type: SwitchType.typeNM,
+              ),
+              SizedBox(width: SizeConfig.safeBlockVertical * 5),
+              getElevatedButton(
+                  text: "copy and close",
+                  onButtonPressed: () {
+                    performHapticFeedback();
+                    Clipboard.setData(ClipboardData(text: controller.password.value))
+                        .then((_) async {
+                      if (Get.isBottomSheetOpen ?? false) {
+                        Get.back();
+                      }
+                      await Future.delayed(const Duration(milliseconds: 250), () {
+                        Get.showSnackbar(getSnackBar(
+                            title: "Password", message: "copied to clipboard successfully."));
                       });
-                    },
-                    fullWidth: true),
-                SizedBox(width: SizeConfig.safeBlockVertical * 5),
-              ],
-            ),
+                    });
+                  },
+                  fullWidth: true),
+              SizedBox(width: SizeConfig.safeBlockVertical * 5),
+            ],
           ),
         ),
       ],

@@ -12,6 +12,8 @@ import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import '../modules/home/home_binding.dart';
 import '../modules/home/home_view.dart';
+import '../modules/home/select_vault/select_vault_binding.dart';
+import '../modules/home/select_vault/select_vault_view.dart';
 import '../modules/loginModule/login/login_binding.dart';
 import '../modules/loginModule/login/login_view.dart';
 import '../modules/loginModule/login_or_register/login_or_register_binding.dart';
@@ -62,6 +64,12 @@ class AppPages {
           name: _Paths.CREATE_VAULT,
           page: () => const CreateVaultView(),
           binding: CreateVaultBinding(),
+          transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: _Paths.SELECT_VAULT,
+          page: () => const SelectVaultView(),
+          binding: SelectVaultBinding(),
           transition: Transition.downToUp,
         ),
       ],

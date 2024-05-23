@@ -28,6 +28,8 @@ class HomeController extends GetxController {
 
   final LocalAuthentication _auth = LocalAuthentication();
 
+  late Timer _timer;
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -42,11 +44,11 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
     _vaultListStream.cancel();
-    if(_credentialsStream != null ) _credentialsStream?.cancel();
+    if (_credentialsStream != null) _credentialsStream?.cancel();
   }
 
   updateCredentialStream() {
-    if(_credentialsStream != null ) _credentialsStream?.cancel();
+    if (_credentialsStream != null) _credentialsStream?.cancel();
     _credentialsStream =
         objectBox.getCredentialsByVaultId(selectedVaultId.value.toString()).listen((event) {
       credentialsList.value = event;
@@ -101,5 +103,21 @@ class HomeController extends GetxController {
       case CredentialType.alias:
         break;
     }
+  }
+
+  assignAndStartTimer() {
+    _timer = Timer(const Duration(seconds: 10), () {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+    });
+  }
+
+  cancelTimer() {
+    _timer.cancel();
+  }
+
+  void handleDelete(CredentialsModel model) {
+    objectBox.removeCredential(model.id);
   }
 }

@@ -148,8 +148,8 @@ InputDecoration getCommonInputDecoration(String labelText, {String hintText = ""
   return InputDecoration(
       labelText: labelText,
       hintText: (hintText.isEmpty) ? labelText : hintText,
-      border: OutlineInputBorder(borderRadius: 100.modifyCorners()),
-      floatingLabelAlignment: FloatingLabelAlignment.center,
+      border: OutlineInputBorder(borderRadius: 10.modifyCorners()),
+      floatingLabelAlignment: FloatingLabelAlignment.start,
       floatingLabelBehavior: FloatingLabelBehavior.auto);
 }
 
@@ -157,6 +157,52 @@ TextStyle titleTextStyle = const TextStyle(
   fontSize: 25,
   fontWeight: FontWeight.bold,
 );
+
+showGetxDialog({
+  required String title,
+  required dynamic message,
+  String positiveButtonText = "",
+  String negativeButtonText = "",
+  void Function()? positiveClick,
+  void Function()? negativeClick,
+  Future<bool> Function()? onDismiss,
+}) {
+  Get.defaultDialog(
+    titlePadding: const EdgeInsets.only(
+      left: 24.0,
+      top: 24.0,
+      right: 24.0,
+    ),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+    title: title,
+    content: (message is String) ? Text(message) : message,
+    actions: <Widget>[
+      if (negativeButtonText.isNotEmpty)
+        OutlinedButton(
+          onPressed: () {
+            performHapticFeedback();
+            if (Get.isDialogOpen ?? false) {
+              Get.back();
+            }
+            negativeClick?.call();
+          },
+          child: Text(negativeButtonText),
+        ),
+      if (positiveButtonText.isNotEmpty)
+        FilledButton(
+          onPressed: () {
+            performHapticFeedback();
+            if (Get.isDialogOpen ?? false) {
+              Get.back();
+            }
+            positiveClick?.call();
+          },
+          child: Text(positiveButtonText),
+        ),
+    ],
+    onWillPop: onDismiss,
+  );
+}
 
 AlertDialog buildAlertDialog({
   required String title,
@@ -225,3 +271,18 @@ Widget getImageView({
     ),
   );
 }
+
+Widget buildPopupMenu(
+        {required List<String> list, required Function(String itemName) onPopupItemSelected}) =>
+    PopupMenuButton<String>(
+      position: PopupMenuPosition.under,
+      onSelected: onPopupItemSelected,
+      itemBuilder: (BuildContext context) {
+        return list.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+          );
+        }).toList();
+      },
+    );

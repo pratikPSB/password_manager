@@ -149,7 +149,8 @@ class HomeView extends GetView<HomeController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           performHapticFeedback();
-          Get.bottomSheet(buildCredentialInsertionOptionBottomSheet());
+          Get.bottomSheet(buildCredentialInsertionOptionBottomSheet(),
+              backgroundColor: Get.theme.colorScheme.secondaryContainer);
         },
         tooltip: "Add password",
         child: const Icon(Icons.add),
@@ -163,18 +164,17 @@ class HomeView extends GetView<HomeController> {
                 contentPadding: const EdgeInsetsDirectional.only(start: 10),
                 leading: ProfilePicture(
                     name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
-                trailing: PopupMenuButton<String>(
-                  position: PopupMenuPosition.under,
-                  onSelected: (value) {
-                    getSnackBar(message: "$value selected");
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return controller.menuOptionsList.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
+                trailing: buildPopupMenu(
+                  list: controller.menuOptionsList,
+                  onPopupItemSelected: (value) {
+                    switch (value) {
+                      case "Edit":
+                        controller.handleEdit(model);
+                        break;
+                      case "Delete":
+                        controller.handleDelete(model);
+                        break;
+                    }
                   },
                 ),
                 horizontalTitleGap: 10,
@@ -193,26 +193,20 @@ class HomeView extends GetView<HomeController> {
                   performHapticFeedback();
                   bool isAuthenticated = await controller.authenticate();
                   if (isAuthenticated) {
-                    Get.dialog(
-                      buildAlertDialog(
+                    showGetxDialog(
                         title: model.name!,
-                        message: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CopyTextView(text: controller.getTextForSubtitle(model)),
-                            CopyTextView(
-                                text: EncryptionUtils().decryptAES(model.password!),
-                                obscureText: true),
-                          ],
-                        ),
+                        message: getCredentialCopyableData(model: model),
                         negativeButtonText: "Edit",
                         negativeClick: () {
                           controller.handleEdit(model);
                         },
-                      ),
-                    );
-                    Future.delayed(const Duration(seconds: 10),
-                        () => (Get.isDialogOpen ?? false) ? Get.back() : ());
+                        onDismiss: () {
+                          return Future(() {
+                            controller.cancelTimer();
+                            return true;
+                          });
+                        });
+                    controller.assignAndStartTimer();
                   }
                 },
               );
@@ -222,55 +216,49 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget buildCredentialInsertionOptionBottomSheet() => Wrap(children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.toDouble()), topRight: Radius.circular(30.toDouble())),
-            color: Get.theme.colorScheme.secondaryContainer,
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
-            child: Column(children: [
-              addCredentialInsertionTypeRow(
-                icon: Icons.person_outline_rounded,
-                title: "Login",
-                subTitle: "Add login details for an app or site",
-                onPressed: () {
-                  Go.toNamed(Routes.GENERATE_CREDENTIALS);
-                },
-              ),
-              /*addCredentialInsertionTypeRow(
-                icon: Icons.masks_outlined,
-                title: "Alias",
-                subTitle: "Get an email alias to use on new apps",
-                onPressed: () {},
-              ),*/
-              addCredentialInsertionTypeRow(
-                icon: Icons.credit_card,
-                title: "Credit card",
-                subTitle: "securely store your payment information",
-                onPressed: () {
-                  Go.toNamed(Routes.GENERATE_CARD_CREDENTIALS);
-                },
-              ),
-              addCredentialInsertionTypeRow(
-                icon: Icons.sticky_note_2_outlined,
-                title: "note",
-                subTitle: "jot down a PIN, code, or note to self",
-                onPressed: () {
-                  Go.toNamed(Routes.GENERATE_NOTE);
-                },
-              ),
-              addCredentialInsertionTypeRow(
-                icon: Icons.key_outlined,
-                title: "Password",
-                subTitle: "Generate a secure password",
-                onPressed: () {
-                  Get.bottomSheet(const GeneratePasswordBottomSheetView());
-                },
-              ),
-            ]),
-          ),
+        Padding(
+          padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
+          child: Column(children: [
+            addCredentialInsertionTypeRow(
+              icon: Icons.person_outline_rounded,
+              title: "Login",
+              subTitle: "Add login details for an app or site",
+              onPressed: () {
+                Go.toNamed(Routes.GENERATE_CREDENTIALS);
+              },
+            ),
+            /*addCredentialInsertionTypeRow(
+              icon: Icons.masks_outlined,
+              title: "Alias",
+              subTitle: "Get an email alias to use on new apps",
+              onPressed: () {},
+            ),*/
+            addCredentialInsertionTypeRow(
+              icon: Icons.credit_card,
+              title: "Credit card",
+              subTitle: "securely store your payment information",
+              onPressed: () {
+                Go.toNamed(Routes.GENERATE_CARD_CREDENTIALS);
+              },
+            ),
+            addCredentialInsertionTypeRow(
+              icon: Icons.sticky_note_2_outlined,
+              title: "note",
+              subTitle: "jot down a PIN, code, or note to self",
+              onPressed: () {
+                Go.toNamed(Routes.GENERATE_NOTE);
+              },
+            ),
+            addCredentialInsertionTypeRow(
+              icon: Icons.key_outlined,
+              title: "Password",
+              subTitle: "Generate a secure password",
+              onPressed: () {
+                Get.bottomSheet(const GeneratePasswordBottomSheetView(),
+                    backgroundColor: Get.theme.colorScheme.secondaryContainer);
+              },
+            ),
+          ]),
         ),
       ]);
 
@@ -279,54 +267,71 @@ class HomeView extends GetView<HomeController> {
           required String title,
           required String subTitle,
           required Function() onPressed}) =>
-      InkWell(
-        borderRadius: 5.modifyCorners(),
-        onTap: () async {
-          performHapticFeedback();
-          if (Get.isBottomSheetOpen ?? false) {
-            Get.back();
-          }
-          //250 millis delay as bottomSheet's default dismiss time is 250 in get Lib.
-          await Future.delayed(const Duration(milliseconds: 250), () {
-            onPressed();
-          });
-        },
-        child: Ink(
-          padding: EdgeInsets.symmetric(
-              vertical: SizeConfig.safeBlockVertical, horizontal: SizeConfig.safeBlockVertical),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                    borderRadius: 10.modifyCorners(),
-                    color: Get.theme.colorScheme.onPrimary.withAlpha(50)),
-                child: Icon(
-                  icon,
-                  size: 30,
-                ),
-              ),
-              SizedBox(
-                width: SizeConfig.safeBlockHorizontal * 2,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: Get.theme.textTheme.bodyLarge,
-                  ),
-                  Text(
-                    subTitle,
-                    style: Get.theme.textTheme.bodySmall,
-                  ),
-                ],
-              )
-            ],
+      ListTile(
+          contentPadding: const EdgeInsetsDirectional.only(start: 10),
+          shape: 50.modifyShapeBorder(),
+          leading: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color("#9ECAff".getColorHexFromStr()).withOpacity(0.25),
+            ),
+            child: Icon(
+              icon,
+              size: 25,
+              color: Color("#9ECAff".getColorHexFromStr()),
+            ),
           ),
-        ),
-      );
+          horizontalTitleGap: 10,
+          minVerticalPadding: 10,
+          title: Text(
+            title,
+          ),
+          subtitle: Text(
+            subTitle,
+          ),
+          onTap: () async {
+            performHapticFeedback();
+            if (Get.isBottomSheetOpen ?? false) {
+              Get.back();
+            }
+            //250 millis delay as bottomSheet's default dismiss time is 250 in get Lib.
+            await Future.delayed(const Duration(milliseconds: 250), () {
+              onPressed();
+            });
+          });
+
+  Widget getCredentialCopyableData({required CredentialsModel model}) {
+    switch (CredentialType.values.byName(model.credType!)) {
+      case CredentialType.login:
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CopyTextView(text: controller.getTextForSubtitle(model)),
+            CopyTextView(text: EncryptionUtils().decryptAES(model.password!), obscureText: true),
+          ],
+        );
+      case CredentialType.card:
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CopyTextView(text: controller.getTextForSubtitle(model), obscureText: true),
+            CopyTextView(text: EncryptionUtils().decryptAES(model.nameOnCard!)),
+            CopyTextView(text: EncryptionUtils().decryptAES(model.expiryDate!)),
+            CopyTextView(text: EncryptionUtils().decryptAES(model.cvvCode!), obscureText: true),
+          ],
+        );
+      case CredentialType.note:
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CopyTextView(text: EncryptionUtils().decryptAES(model.password!), obscureText: true),
+            CopyTextView(text: controller.getTextForSubtitle(model)),
+          ],
+        );
+      case CredentialType.alias:
+        return Container();
+    }
+  }
 }
