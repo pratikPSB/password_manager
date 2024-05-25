@@ -17,9 +17,9 @@ class ObjectBox {
   ObjectBox._create(this._store) {
     if (kDebugMode) {
       if (_isAdminInitialized) {
-          _admin?.close();
-          _admin = null;
-          _isAdminInitialized = false;
+        _admin?.close();
+        _admin = null;
+        _isAdminInitialized = false;
       }
       if (Admin.isAvailable()) {
         _isAdminInitialized = true;
@@ -32,27 +32,34 @@ class ObjectBox {
 
   static Future<ObjectBox> create() async {
     final store = await openStore(
-        directory: join((await getApplicationDocumentsDirectory()).path, "password-manager"),
+        directory: join((await getApplicationDocumentsDirectory()).path,
+            "password-manager"),
         macosApplicationGroup: "password.manager");
     return ObjectBox._create(store);
   }
 
   //get stream list of all credentials
   Stream<List<CredentialsModel>> getCredentials() {
-    final builder = _credentialsBox.query().order(CredentialsModel_.id, flags: Order.descending);
+    final builder = _credentialsBox
+        .query()
+        .order(CredentialsModel_.id, flags: Order.descending);
     return builder.watch(triggerImmediately: true).map((query) => query.find());
   }
 
-  Stream<List<CredentialsModel>> getCredentialsByVaultId(String vaultId){
-    final builder = _credentialsBox.query(CredentialsModel_.vaultId.equals(vaultId)).order(CredentialsModel_.id, flags: Order.descending);
+  Stream<List<CredentialsModel>> getCredentialsByVaultId(String vaultId) {
+    final builder = _credentialsBox
+        .query(CredentialsModel_.vaultId.equals(vaultId))
+        .order(CredentialsModel_.id, flags: Order.descending);
     return builder.watch(triggerImmediately: true).map((query) => query.find());
   }
 
   //add new credential
-  Future<void> addCredential(CredentialsModel post) => _credentialsBox.putAsync(post);
+  Future<void> addCredential(CredentialsModel post) =>
+      _credentialsBox.putAsync(post);
 
   //remove credential
-  Future<void> removeCredential(int uniqueId) => _credentialsBox.removeAsync(uniqueId);
+  Future<void> removeCredential(int uniqueId) =>
+      _credentialsBox.removeAsync(uniqueId);
 
   //get stream list of all vaults
   Stream<List<VaultModel>> getVaults() {
