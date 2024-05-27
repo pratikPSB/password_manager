@@ -72,28 +72,31 @@ class LoginOrRegisterView extends GetView<LoginOrRegisterController> {
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  const Color(0xFF212121).withAlpha(99),
-                  const Color(0xFF212121),
+                  Get.theme.colorScheme.background.withAlpha(99),
+                  Get.theme.colorScheme.background
                 ],
                 begin: Alignment.topRight,
                 end: Alignment.bottomRight,
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Image.asset(
-                  imgLogo,
-                  fit: BoxFit.fitWidth,
-                  width: SizeConfig.screenWidth / 10,
-                ),
-                SizedBox(width: SizeConfig.safeBlockHorizontal * 3),
-                Text(
-                  "Password Manager",
-                  style: Get.textTheme.headlineSmall,
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Image.asset(
+                    imgLogo,
+                    fit: BoxFit.fitWidth,
+                    width: SizeConfig.screenWidth / 10,
+                  ),
+                  SizedBox(width: SizeConfig.safeBlockHorizontal * 3),
+                  Text(
+                    "Password Manager",
+                    style: Get.textTheme.headlineSmall,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/vault_model.dart';
+import 'package:password_manager/app/data/model/vault_model.dart';
 import 'package:password_manager/app/data/resources/assets.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 

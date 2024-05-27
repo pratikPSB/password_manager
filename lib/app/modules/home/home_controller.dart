@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:password_manager/app/data/db/credentials_model.dart';
-import 'package:password_manager/app/data/db/vault_model.dart';
+import 'package:password_manager/app/data/model/credentials_model.dart';
+import 'package:password_manager/app/data/model/vault_model.dart';
 import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 
@@ -22,7 +22,7 @@ class HomeController extends GetxController {
 
   StreamSubscription<List<CredentialsModel>>? _credentialsStream;
   Rx<List<CredentialsModel>> credentialsList = Rx<List<CredentialsModel>>([]);
-  final lvbCredentialsKey = const PageStorageKey("keep credentials alive");
+  final lvCredentialsKey = const PageStorageKey("keep credentials alive");
 
   final menuOptionsList = ['Edit', 'Delete'];
 

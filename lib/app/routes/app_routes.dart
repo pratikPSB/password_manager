@@ -16,7 +16,8 @@ abstract class Routes {
       _Paths.HOME + _Paths.GENERATE_CARD_CREDENTIALS;
   static const GENERATE_NOTE = _Paths.HOME + _Paths.GENERATE_NOTE;
   static const CREATE_VAULT = _Paths.HOME + _Paths.CREATE_VAULT;
-  static const SELECT_VAULT = _Paths.HOME + _Paths.SELECT_VAULT;
+  static const SELECT_VAULT_BOTTOM_SHEET =
+      _Paths.HOME + _Paths.SELECT_VAULT_BOTTOM_SHEET;
 }
 
 abstract class _Paths {
@@ -33,5 +34,5 @@ abstract class _Paths {
   static const GENERATE_CARD_CREDENTIALS = '/generate-card-credentials';
   static const GENERATE_NOTE = '/generate-note';
   static const CREATE_VAULT = '/create-vault';
-  static const SELECT_VAULT = '/select-vault';
+  static const SELECT_VAULT_BOTTOM_SHEET = '/select-vault-bottom-sheet';
 }

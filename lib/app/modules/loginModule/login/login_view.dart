@@ -10,9 +10,8 @@ import '../../../data/utils/widgets.dart';
 import 'login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  final _formKey = GlobalKey<FormState>();
 
-  LoginView({super.key});
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class LoginView extends GetView<LoginController> {
                   const Text("Enter your PM account details."),
                   SizedBox(height: SizeConfig.safeBlockVertical * 5),
                   Form(
-                      key: _formKey,
+                      key: controller.formKey,
                       child: Column(children: [
                         TextFormField(
                           keyboardType: TextInputType.emailAddress,

@@ -14,8 +14,8 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import '../../app/data/db/credentials_model.dart';
-import '../../app/data/db/vault_model.dart';
+import '../../app/data/model/credentials_model.dart';
+import '../../app/data/model/vault_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 

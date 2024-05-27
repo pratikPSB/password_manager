@@ -12,8 +12,8 @@ import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_
 import '../modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
 import '../modules/home/home_binding.dart';
 import '../modules/home/home_view.dart';
-import '../modules/home/select_vault/select_vault_binding.dart';
-import '../modules/home/select_vault/select_vault_view.dart';
+import '../modules/home/select_vault_bottom_sheet/select_vault_bottom_sheet_binding.dart';
+import '../modules/home/select_vault_bottom_sheet/select_vault_bottom_sheet_view.dart';
 import '../modules/loginModule/login/login_binding.dart';
 import '../modules/loginModule/login/login_view.dart';
 import '../modules/loginModule/login_or_register/login_or_register_binding.dart';
@@ -33,14 +33,24 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
+      bindings: [
+        HomeBinding(),
+        SelectVaultBottomSheetBinding(),
+        GeneratePasswordBottomSheetBinding(),
+      ],
       transition: Transition.rightToLeft,
       children: [
         GetPage(
           name: _Paths.GENERATE_PASSWORD_BOTTOM_SHEET,
           page: () => const GeneratePasswordBottomSheetView(),
-          binding: GeneratePasswordBottomSheetBinding(),
+          transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: _Paths.SELECT_VAULT_BOTTOM_SHEET,
+          page: () => const SelectVaultBottomSheetView(),
+          transition: Transition.downToUp,
         ),
         GetPage(
           name: _Paths.GENERATE_CREDENTIALS,
@@ -66,23 +76,16 @@ class AppPages {
           binding: CreateVaultBinding(),
           transition: Transition.downToUp,
         ),
-        GetPage(
-          name: _Paths.SELECT_VAULT,
-          page: () => const SelectVaultView(),
-          binding: SelectVaultBinding(),
-          transition: Transition.downToUp,
-        ),
       ],
     ),
     GetPage(
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
-      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: _Paths.LOGIN,
-      page: () => LoginView(),
+      page: () => const LoginView(),
       binding: LoginBinding(),
       transition: Transition.rightToLeft,
     ),

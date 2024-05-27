@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/vault_model.dart';
 import 'package:password_manager/app/data/resources/assets.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
@@ -11,7 +10,8 @@ import 'package:password_manager/app/routes/app_pages.dart';
 
 import '../../data/customClasses/copy_text_view.dart';
 import '../../data/customClasses/easy_button.dart';
-import '../../data/db/credentials_model.dart';
+import '../../data/model/vault_model.dart';
+import '../../data/model/credentials_model.dart';
 import '../../data/resources/size_config.dart';
 import '../../data/utils/widgets.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
@@ -105,11 +105,6 @@ class HomeView extends GetView<HomeController> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          subtitle: Text(
-                            "${model.name}",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
                           onTap: () async {
                             performHapticFeedback();
                             prefs().setInt(prefSelectedVaultId, model.id);
@@ -149,14 +144,13 @@ class HomeView extends GetView<HomeController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           performHapticFeedback();
-          Get.bottomSheet(buildCredentialInsertionOptionBottomSheet(),
-              backgroundColor: Get.theme.colorScheme.secondaryContainer);
+          Get.bottomSheet(buildCredentialInsertionOptionBottomSheet(), backgroundColor: Get.theme.colorScheme.secondaryContainer);
         },
         tooltip: "Add password",
         child: const Icon(Icons.add),
       ),
       body: Obx(() => ListView.builder(
-            key: controller.lvbCredentialsKey,
+            key: controller.lvCredentialsKey,
             itemCount: controller.credentialsList.value.length,
             itemBuilder: (context, index) {
               CredentialsModel model = controller.credentialsList.value[index];
@@ -254,8 +248,7 @@ class HomeView extends GetView<HomeController> {
               title: "Password",
               subTitle: "Generate a secure password",
               onPressed: () {
-                Get.bottomSheet(const GeneratePasswordBottomSheetView(),
-                    backgroundColor: Get.theme.colorScheme.secondaryContainer);
+                Get.bottomSheet(const GeneratePasswordBottomSheetView(), backgroundColor: Get.theme.colorScheme.secondaryContainer);
               },
             ),
           ]),

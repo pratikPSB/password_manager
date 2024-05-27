@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/credentials_model.dart';
+import 'package:password_manager/app/data/model/credentials_model.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/app/modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_controller.dart';
 import 'package:password_manager/main.dart';
@@ -41,7 +41,7 @@ class GenerateCredentialsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    initTextControllers();
+    initStreams();
     addFocusNodeListeners();
 
     if (arguments != null) {
@@ -53,7 +53,7 @@ class GenerateCredentialsController extends GetxController {
     }
   }
 
-  initTextControllers() {
+  initStreams() {
     stream = Get.find<GeneratePasswordBottomSheetController>().password.listen((password) {
       pwdController.text = password;
     });
@@ -72,7 +72,7 @@ class GenerateCredentialsController extends GetxController {
 
   insertCredentialsToDB() async {
     performHapticFeedback();
-    if(formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
       int id = await prefs().getInt(prefSelectedVaultId);
       DateTime dateTime = DateTime.now();

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/db/vault_model.dart';
+import 'package:password_manager/app/data/model/vault_model.dart';
 import 'package:password_manager/app/data/utils/constants.dart';
 import 'package:password_manager/main.dart';
 

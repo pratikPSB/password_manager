@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../main.dart';
-import '../../../data/db/vault_model.dart';
+import '../../../data/model/vault_model.dart';
 import '../../../data/resources/assets.dart';
 import '../../../data/utils/constants.dart';
 import '../../../data/utils/extensions.dart';
@@ -10,6 +10,8 @@ import '../../../data/utils/go.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
+  final formKey = GlobalKey<FormState>();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pwdController = TextEditingController();
 
