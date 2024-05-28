@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../../main.dart';
 import '../../../data/model/credentials_model.dart';
-import '../../../data/utils/constants.dart';
 import '../../../data/utils/encrypt_decrypt.dart';
 import '../../../data/utils/extensions.dart';
+import '../select_vault_bottom_sheet/select_vault_bottom_sheet_controller.dart';
 
 class GenerateNoteController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -18,6 +18,7 @@ class GenerateNoteController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    Get.find<SelectVaultBottomSheetController>().fetchSelectedVault();
     if (arguments != null) {
       titleController.text = arguments!.name!;
       noteController.text = EncryptionUtils().decryptAES(arguments!.notes!);
@@ -28,7 +29,9 @@ class GenerateNoteController extends GetxController {
     performHapticFeedback();
     if (formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
-      int id = await prefs().getInt(prefSelectedVaultId);
+      int id = Get.find<SelectVaultBottomSheetController>()
+          .selectedVault
+          .value.id;
       DateTime dateTime = DateTime.now();
       if (arguments != null) {
         CredentialsModel model = arguments!.copyWith(

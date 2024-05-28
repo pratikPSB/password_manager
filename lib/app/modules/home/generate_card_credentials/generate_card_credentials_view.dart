@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:password_manager/app/data/utils/extensions.dart';
 
 import '../../../data/resources/size_config.dart';
 import '../../../data/utils/widgets.dart';
+import '../select_vault_bottom_sheet/select_vault_bottom_sheet_controller.dart';
+import '../select_vault_bottom_sheet/select_vault_bottom_sheet_view.dart';
 import 'generate_card_credentials_controller.dart';
 
 class GenerateCardCredentialsView
@@ -25,6 +27,48 @@ class GenerateCardCredentialsView
               child: Form(
                 key: controller.formKey,
                 child: Column(children: [
+                  Obx(() => ListTile(
+                    contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                    shape: 50.modifyShapeBorder(),
+                    leading: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: getImageView(
+                        assetPath: Get.find<SelectVaultBottomSheetController>()
+                            .selectedVault
+                            .value
+                            .iconPath,
+                        bgColor: Get.find<SelectVaultBottomSheetController>()
+                            .selectedVault
+                            .value
+                            .vaultColor,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      iconSize: 24,
+                      onPressed: () {
+                        performHapticFeedback();
+                        Get.bottomSheet(const SelectVaultBottomSheetView(),
+                            backgroundColor: Get.theme.colorScheme.secondaryContainer);
+                      },
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    ),
+                    horizontalTitleGap: 10,
+                    minVerticalPadding: 20,
+                    title: Text(
+                      "${Get.find<SelectVaultBottomSheetController>().selectedVault.value.name}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () async {
+                      performHapticFeedback();
+                      Get.bottomSheet(const SelectVaultBottomSheetView(),
+                          backgroundColor: Get.theme.colorScheme.secondaryContainer);
+                    },
+                  )),
+                  SizedBox(
+                    height: SizeConfig.safeBlockVertical * 2,
+                  ),
                   TextFormField(
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,

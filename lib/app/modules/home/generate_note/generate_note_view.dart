@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/resources/size_config.dart';
+import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/widgets.dart';
 
+import '../select_vault_bottom_sheet/select_vault_bottom_sheet_controller.dart';
+import '../select_vault_bottom_sheet/select_vault_bottom_sheet_view.dart';
 import 'generate_note_controller.dart';
 
 class GenerateNoteView extends GetView<GenerateNoteController> {
@@ -17,6 +20,48 @@ class GenerateNoteView extends GetView<GenerateNoteController> {
         child: Form(
           key: controller.formKey,
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            SizedBox(
+              height: SizeConfig.safeBlockVertical * 2,
+            ),
+            Obx(() => ListTile(
+              contentPadding: const EdgeInsetsDirectional.only(start: 10),
+              shape: 50.modifyShapeBorder(),
+              leading: SizedBox(
+                width: 50,
+                height: 50,
+                child: getImageView(
+                  assetPath: Get.find<SelectVaultBottomSheetController>()
+                      .selectedVault
+                      .value
+                      .iconPath,
+                  bgColor: Get.find<SelectVaultBottomSheetController>()
+                      .selectedVault
+                      .value
+                      .vaultColor,
+                ),
+              ),
+              trailing: IconButton(
+                iconSize: 24,
+                onPressed: () {
+                  performHapticFeedback();
+                  Get.bottomSheet(const SelectVaultBottomSheetView(),
+                      backgroundColor: Get.theme.colorScheme.secondaryContainer);
+                },
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
+              ),
+              horizontalTitleGap: 10,
+              minVerticalPadding: 20,
+              title: Text(
+                "${Get.find<SelectVaultBottomSheetController>().selectedVault.value.name}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              onTap: () async {
+                performHapticFeedback();
+                Get.bottomSheet(const SelectVaultBottomSheetView(),
+                    backgroundColor: Get.theme.colorScheme.secondaryContainer);
+              },
+            )),
             TextFormField(
               decoration: getCommonInputDecoration("Title").copyWith(
                 border: InputBorder.none,

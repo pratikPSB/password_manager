@@ -10,8 +10,8 @@ import 'package:password_manager/app/routes/app_pages.dart';
 
 import '../../data/customClasses/copy_text_view.dart';
 import '../../data/customClasses/easy_button.dart';
-import '../../data/model/vault_model.dart';
 import '../../data/model/credentials_model.dart';
+import '../../data/model/vault_model.dart';
 import '../../data/resources/size_config.dart';
 import '../../data/utils/widgets.dart';
 import 'generate_password_bottom_sheet/generate_password_bottom_sheet_view.dart';
@@ -144,7 +144,8 @@ class HomeView extends GetView<HomeController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           performHapticFeedback();
-          Get.bottomSheet(buildCredentialInsertionOptionBottomSheet(), backgroundColor: Get.theme.colorScheme.secondaryContainer);
+          Get.bottomSheet(buildCredentialInsertionOptionBottomSheet(),
+              backgroundColor: Get.theme.colorScheme.secondaryContainer);
         },
         tooltip: "Add password",
         child: const Icon(Icons.add),
@@ -209,51 +210,54 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget buildCredentialInsertionOptionBottomSheet() => Wrap(children: [
-        Padding(
-          padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
-          child: Column(children: [
-            addCredentialInsertionTypeRow(
-              icon: Icons.person_outline_rounded,
-              title: "Login",
-              subTitle: "Add login details for an app or site",
-              onPressed: () {
-                Go.toNamed(Routes.GENERATE_CREDENTIALS);
-              },
-            ),
-            /*addCredentialInsertionTypeRow(
+  Widget buildCredentialInsertionOptionBottomSheet() => Wrap(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal * 2),
+            child: Column(children: [
+              addCredentialInsertionTypeRow(
+                icon: Icons.person_outline_rounded,
+                title: "Login",
+                subTitle: "Add login details for an app or site",
+                onPressed: () {
+                  Go.toNamed(Routes.GENERATE_CREDENTIALS);
+                },
+              ),
+              /*addCredentialInsertionTypeRow(
               icon: Icons.masks_outlined,
               title: "Alias",
               subTitle: "Get an email alias to use on new apps",
               onPressed: () {},
             ),*/
-            addCredentialInsertionTypeRow(
-              icon: Icons.credit_card,
-              title: "Credit card",
-              subTitle: "securely store your payment information",
-              onPressed: () {
-                Go.toNamed(Routes.GENERATE_CARD_CREDENTIALS);
-              },
-            ),
-            addCredentialInsertionTypeRow(
-              icon: Icons.sticky_note_2_outlined,
-              title: "note",
-              subTitle: "jot down a PIN, code, or note to self",
-              onPressed: () {
-                Go.toNamed(Routes.GENERATE_NOTE);
-              },
-            ),
-            addCredentialInsertionTypeRow(
-              icon: Icons.key_outlined,
-              title: "Password",
-              subTitle: "Generate a secure password",
-              onPressed: () {
-                Get.bottomSheet(const GeneratePasswordBottomSheetView(), backgroundColor: Get.theme.colorScheme.secondaryContainer);
-              },
-            ),
-          ]),
-        ),
-      ]);
+              addCredentialInsertionTypeRow(
+                icon: Icons.credit_card,
+                title: "Credit card",
+                subTitle: "securely store your payment information",
+                onPressed: () {
+                  Go.toNamed(Routes.GENERATE_CARD_CREDENTIALS);
+                },
+              ),
+              addCredentialInsertionTypeRow(
+                icon: Icons.sticky_note_2_outlined,
+                title: "note",
+                subTitle: "jot down a PIN, code, or note to self",
+                onPressed: () {
+                  Go.toNamed(Routes.GENERATE_NOTE);
+                },
+              ),
+              addCredentialInsertionTypeRow(
+                icon: Icons.key_outlined,
+                title: "Password",
+                subTitle: "Generate a secure password",
+                onPressed: () {
+                  Get.bottomSheet(const GeneratePasswordBottomSheetView(),
+                      backgroundColor: Get.theme.colorScheme.secondaryContainer);
+                },
+              ),
+            ]),
+          ),
+        ],
+      );
 
   Widget addCredentialInsertionTypeRow(
           {required IconData icon,

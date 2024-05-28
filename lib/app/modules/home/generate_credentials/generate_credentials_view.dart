@@ -34,6 +34,7 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
                     child: Column(children: [
                       Obx(() => ListTile(
                             contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                            shape: 50.modifyShapeBorder(),
                             leading: SizedBox(
                               width: 50,
                               height: 50,
@@ -58,7 +59,7 @@ class GenerateCredentialsView extends GetView<GenerateCredentialsController> {
                               icon: const Icon(Icons.keyboard_arrow_down_rounded),
                             ),
                             horizontalTitleGap: 10,
-                            minVerticalPadding: 10,
+                            minVerticalPadding: 20,
                             title: Text(
                               "${Get.find<SelectVaultBottomSheetController>().selectedVault.value.name}",
                               maxLines: 1,

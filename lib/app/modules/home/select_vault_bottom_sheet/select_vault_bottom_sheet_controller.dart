@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:password_manager/app/data/utils/go.dart';
+import 'package:password_manager/app/routes/app_pages.dart';
 
 import '../../../../main.dart';
 import '../../../data/model/vault_model.dart';
@@ -27,8 +29,16 @@ class SelectVaultBottomSheetController extends GetxController {
     _vaultListStream.cancel();
   }
 
-  fetchSelectedVault() async {
-    selectedVaultId.value = await prefs().getInt(prefSelectedVaultId);
+  fetchSelectedVault([VaultModel? model]) async {
+    if (model != null) {
+      selectedVaultId.value = model.id;
+    } else {
+      selectedVaultId.value = await prefs().getInt(prefSelectedVaultId);
+    }
     selectedVault.value = objectBox.getVaultById(selectedVaultId.value);
+  }
+
+  goToCreateVaultScreen() {
+    Go.toNamed(Routes.CREATE_VAULT);
   }
 }
