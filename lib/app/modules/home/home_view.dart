@@ -188,7 +188,7 @@ class HomeView extends GetView<HomeController> {
                   performHapticFeedback();
                   bool isAuthenticated = await controller.authenticate();
                   if (isAuthenticated) {
-                    showGetxDialog(
+                    showGetXDialog(
                         title: model.name!,
                         message: getCredentialCopyableData(model: model),
                         negativeButtonText: "Edit",

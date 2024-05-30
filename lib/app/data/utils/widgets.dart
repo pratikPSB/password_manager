@@ -158,7 +158,7 @@ TextStyle titleTextStyle = const TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-showGetxDialog({
+showGetXDialog({
   required String title,
   required dynamic message,
   String positiveButtonText = "",

@@ -1,25 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:password_manager/app/data/utils/go.dart';
-import 'package:password_manager/app/routes/app_pages.dart';
+import 'package:password_manager/app/data/services/auth/authentication.dart';
+import 'package:password_manager/app/data/utils/extensions.dart';
+
+import '../../data/utils/go.dart';
+import '../../routes/app_pages.dart';
 
 class SplashController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    Future.delayed(const Duration(milliseconds: 3000), () => checkLogin());
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    checkLogin();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void checkLogin() {
-    Go.offNamed(Routes.LOGIN_OR_REGISTER);
+  Future<void> checkLogin() async {
+    User? user = await Authentication.getCurrentUser();
+    if (user != null) {
+      printDebug("current logged-in user's unique id is: ${user.uid}");
+      if (user.isAnonymous) {
+        Go.offNamed(Routes.LOGIN_OR_REGISTER);
+      } else {
+        Go.offNamed(Routes.HOME);
+      }
+    } else {
+      user = await Authentication.signInAnonymous();
+      printDebug("current logged-in user's unique id is: ${user?.uid}");
+      Go.offNamed(Routes.LOGIN_OR_REGISTER);
+    }
   }
 }

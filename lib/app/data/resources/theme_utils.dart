@@ -15,8 +15,14 @@ ColorScheme _darkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
 );
 
-TextStyle styleLight = TextStyle(color: _lightColorScheme.primary, fontFamily: "Poppins");
-TextStyle styleDark = TextStyle(color: _darkColorScheme.primary, fontFamily: "Poppins");
+TextStyle styleLight = const TextStyle(
+  color: Colors.black,
+  fontFamily: "Poppins",
+);
+TextStyle styleDark = const TextStyle(
+  color: Colors.white,
+  fontFamily: "Poppins",
+);
 
 class ThemeUtils {
   static ThemeData getLightTheme() {

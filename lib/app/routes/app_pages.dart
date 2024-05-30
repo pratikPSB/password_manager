@@ -93,7 +93,7 @@ class AppPages {
       name: _Paths.LOGIN_OR_REGISTER,
       page: () => const LoginOrRegisterView(),
       binding: LoginOrRegisterBinding(),
-      transition: Transition.rightToLeft,
+      transition: Transition.downToUp,
     ),
     GetPage(
       name: _Paths.REGISTER,

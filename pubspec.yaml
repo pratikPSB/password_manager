@@ -50,7 +50,7 @@ dependencies:
   firebase_analytics: ^10.8.0
   firebase_crashlytics: ^3.4.9
   firebase_auth: ^4.16.0
-  firebase_database: ^10.5.2
+  cloud_firestore: ^4.17.5
   google_sign_in: ^6.2.1
 
 dev_dependencies:

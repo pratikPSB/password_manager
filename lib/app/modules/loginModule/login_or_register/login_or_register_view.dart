@@ -61,9 +61,12 @@ class LoginOrRegisterView extends GetView<LoginOrRegisterController> {
                 transform: const GradientRotation(pi / 13),
               ),
             ),
-            child: Image.asset(
-              imgLogo,
-              width: SizeConfig.screenWidth / 3,
+            child: Hero(
+              tag: "app_logo",
+              child: Image.asset(
+                imgLogo,
+                width: SizeConfig.screenWidth / 3,
+              ),
             ),
           ),
           Container(
