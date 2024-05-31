@@ -17,14 +17,11 @@ class SplashController extends GetxController {
     User? user = await Authentication.getCurrentUser();
     if (user != null) {
       printDebug("current logged-in user's unique id is: ${user.uid}");
-      if (user.isAnonymous) {
-        Go.offNamed(Routes.LOGIN_OR_REGISTER);
-      } else {
-        Go.offNamed(Routes.HOME);
+      if (!user.isAnonymous) {
+        Authentication.initiateEmailVerificationFlow();
       }
+      Go.offNamed(Routes.HOME);
     } else {
-      user = await Authentication.signInAnonymous();
-      printDebug("current logged-in user's unique id is: ${user?.uid}");
       Go.offNamed(Routes.LOGIN_OR_REGISTER);
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:password_manager/app/data/resources/size_config.dart';
 import 'package:password_manager/app/data/resources/theme_utils.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
@@ -285,4 +286,22 @@ Widget buildPopupMenu(
           );
         }).toList();
       },
+    );
+
+Widget noDataWidget() => SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Lottie.asset(
+            noDataJson,
+            width: 250,
+            height: 250,
+            frameRate: FrameRate.max,
+            fit: BoxFit.fitWidth,
+            repeat: true,
+          ),
+        ],
+      ),
     );

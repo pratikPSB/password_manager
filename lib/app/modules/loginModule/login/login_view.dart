@@ -10,7 +10,6 @@ import '../../../data/utils/widgets.dart';
 import 'login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-
   const LoginView({super.key});
 
   @override
@@ -92,7 +91,7 @@ class LoginView extends GetView<LoginController> {
                         SizedBox(height: SizeConfig.safeBlockVertical * 5),
                       ])),
                   getElevatedButton(
-                      text: "Sign In", onButtonPressed: controller.openHome, fullWidth: true)
+                      text: "Sign In", onButtonPressed: controller.performSignIn, fullWidth: true)
                 ],
               ),
             ),

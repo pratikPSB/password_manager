@@ -31,8 +31,14 @@ class LoginOrRegisterView extends GetView<LoginOrRegisterController> {
                   getElevatedButton(
                       text: "Create an account", onButtonPressed: controller.openRegister),
                   SizedBox(height: SizeConfig.safeBlockVertical),
-                  getTextButton(text: "Sign Up", onButtonPressed: controller.openLogin),
-                  SizedBox(height: SizeConfig.safeBlockVertical),
+                  getTextButton(text: "Sign in", onButtonPressed: controller.openLogin),
+                  SizedBox(height: SizeConfig.safeBlockVertical * 2),
+                  Text(
+                    "or",
+                    style: Get.textTheme.bodySmall,
+                  ),
+                  SizedBox(height: SizeConfig.safeBlockVertical * 2),
+                  getTextButton(text: "Login with Google", onButtonPressed: controller.loginWithGoogle),
                 ],
               ),
             ),

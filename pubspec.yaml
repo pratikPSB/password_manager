@@ -53,6 +53,9 @@ dependencies:
   cloud_firestore: ^4.17.5
   google_sign_in: ^6.2.1
 
+#  lottie amination
+  lottie: ^3.1.2
+
 dev_dependencies:
   analyzer: ^6.4.1
   flutter_lints: ^4.0.0
@@ -68,6 +71,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/icons/
+    - assets/json/
   fonts:
     - family: Poppins
       fonts:

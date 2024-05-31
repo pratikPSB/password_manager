@@ -150,63 +150,65 @@ class HomeView extends GetView<HomeController> {
         tooltip: "Add password",
         child: const Icon(Icons.add),
       ),
-      body: Obx(() => ListView.builder(
-            key: controller.lvCredentialsKey,
-            itemCount: controller.credentialsList.value.length,
-            itemBuilder: (context, index) {
-              CredentialsModel model = controller.credentialsList.value[index];
-              return ListTile(
-                contentPadding: const EdgeInsetsDirectional.only(start: 10),
-                leading: ProfilePicture(
-                    name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
-                trailing: buildPopupMenu(
-                  list: controller.menuOptionsList,
-                  onPopupItemSelected: (value) {
-                    switch (value) {
-                      case "Edit":
-                        controller.handleEdit(model);
-                        break;
-                      case "Delete":
-                        controller.handleDelete(model);
-                        break;
+      body: Obx(() => (controller.credentialsList.value.isEmpty)
+          ? noDataWidget()
+          : ListView.builder(
+              key: controller.lvCredentialsKey,
+              itemCount: controller.credentialsList.value.length,
+              itemBuilder: (context, index) {
+                CredentialsModel model = controller.credentialsList.value[index];
+                return ListTile(
+                  contentPadding: const EdgeInsetsDirectional.only(start: 10),
+                  leading: ProfilePicture(
+                      name: model.name!, radius: 30, fontsize: Get.textTheme.bodyLarge!.fontSize!),
+                  trailing: buildPopupMenu(
+                    list: controller.menuOptionsList,
+                    onPopupItemSelected: (value) {
+                      switch (value) {
+                        case "Edit":
+                          controller.handleEdit(model);
+                          break;
+                        case "Delete":
+                          controller.handleDelete(model);
+                          break;
+                      }
+                    },
+                  ),
+                  horizontalTitleGap: 10,
+                  minVerticalPadding: 10,
+                  title: Text(
+                    "${model.name}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    controller.getTextForSubtitle(model),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () async {
+                    performHapticFeedback();
+                    bool isAuthenticated = await controller.authenticate();
+                    if (isAuthenticated) {
+                      showGetXDialog(
+                          title: model.name!,
+                          message: getCredentialCopyableData(model: model),
+                          negativeButtonText: "Edit",
+                          negativeClick: () {
+                            controller.handleEdit(model);
+                          },
+                          onDismiss: () {
+                            return Future(() {
+                              controller.cancelTimer();
+                              return true;
+                            });
+                          });
+                      controller.assignAndStartTimer();
                     }
                   },
-                ),
-                horizontalTitleGap: 10,
-                minVerticalPadding: 10,
-                title: Text(
-                  "${model.name}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(
-                  controller.getTextForSubtitle(model),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                onTap: () async {
-                  performHapticFeedback();
-                  bool isAuthenticated = await controller.authenticate();
-                  if (isAuthenticated) {
-                    showGetXDialog(
-                        title: model.name!,
-                        message: getCredentialCopyableData(model: model),
-                        negativeButtonText: "Edit",
-                        negativeClick: () {
-                          controller.handleEdit(model);
-                        },
-                        onDismiss: () {
-                          return Future(() {
-                            controller.cancelTimer();
-                            return true;
-                          });
-                        });
-                    controller.assignAndStartTimer();
-                  }
-                },
-              );
-            },
-          )),
+                );
+              },
+            )),
     );
   }
 

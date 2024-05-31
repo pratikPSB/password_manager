@@ -1,6 +1,8 @@
 const String imgLogo = "assets/images/pm_logo.png";
 const String googleLogo = "assets/images/google_logo.png";
 
+const String noDataJson = "assets/json/no_data.json";
+
 class CustomIcons {
   static const _initialPath = "assets/images/icons";
 
