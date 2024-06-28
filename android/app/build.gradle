@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -61,4 +64,12 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+configurations {
+    debugImplementation {
+        exclude group: 'io.objectbox', module: 'objectbox-android'
+    }
+}
+
+dependencies {
+    debugImplementation("io.objectbox:objectbox-android-objectbrowser:4.0.0")
+}

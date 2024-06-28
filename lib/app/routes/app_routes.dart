@@ -9,7 +9,15 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const LOGIN_OR_REGISTER = _Paths.LOGIN_OR_REGISTER;
   static const REGISTER = _Paths.REGISTER;
-  static const GENERATE_PASSWORD_BOTTOM_SHEET = _Paths.HOME + _Paths.GENERATE_PASSWORD_BOTTOM_SHEET;
+  static const GENERATE_PASSWORD_BOTTOM_SHEET =
+      _Paths.HOME + _Paths.GENERATE_PASSWORD_BOTTOM_SHEET;
+  static const GENERATE_CREDENTIALS = _Paths.HOME + _Paths.GENERATE_CREDENTIALS;
+  static const GENERATE_CARD_CREDENTIALS =
+      _Paths.HOME + _Paths.GENERATE_CARD_CREDENTIALS;
+  static const GENERATE_NOTE = _Paths.HOME + _Paths.GENERATE_NOTE;
+  static const CREATE_VAULT = _Paths.HOME + _Paths.CREATE_VAULT;
+  static const SELECT_VAULT_BOTTOM_SHEET =
+      _Paths.HOME + _Paths.SELECT_VAULT_BOTTOM_SHEET;
 }
 
 abstract class _Paths {
@@ -20,5 +28,11 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const LOGIN_OR_REGISTER = '/login-or-register';
   static const REGISTER = '/register';
-  static const GENERATE_PASSWORD_BOTTOM_SHEET = '/generate-password-bottom-sheet';
+  static const GENERATE_PASSWORD_BOTTOM_SHEET =
+      '/generate-password-bottom-sheet';
+  static const GENERATE_CREDENTIALS = '/generate-credentials';
+  static const GENERATE_CARD_CREDENTIALS = '/generate-card-credentials';
+  static const GENERATE_NOTE = '/generate-note';
+  static const CREATE_VAULT = '/create-vault';
+  static const SELECT_VAULT_BOTTOM_SHEET = '/select-vault-bottom-sheet';
 }

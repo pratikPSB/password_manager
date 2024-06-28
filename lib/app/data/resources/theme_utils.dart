@@ -3,8 +3,26 @@ import 'package:get/get.dart';
 
 import '../utils/constants.dart';
 
-TextStyle styleLight = TextStyle(color: Get.theme.colorScheme.onPrimary, fontFamily: "Poppins");
-TextStyle styleDark = TextStyle(color: Get.theme.colorScheme.onPrimary, fontFamily: "Poppins");
+ColorScheme _lightColorScheme = ColorScheme.fromSeed(
+  seedColor: const Color(0xFF20B6FA),
+  surface: const Color(0xFFE5E5E5),
+  brightness: Brightness.light,
+);
+
+ColorScheme _darkColorScheme = ColorScheme.fromSeed(
+  seedColor: const Color(0xFF20B6FA),
+  surface: const Color(0xFF212121),
+  brightness: Brightness.dark,
+);
+
+TextStyle styleLight = const TextStyle(
+  color: Colors.black,
+  fontFamily: "Poppins",
+);
+TextStyle styleDark = const TextStyle(
+  color: Colors.white,
+  fontFamily: "Poppins",
+);
 
 class ThemeUtils {
   static ThemeData getLightTheme() {
@@ -15,24 +33,27 @@ class ThemeUtils {
       hintColor: Colors.black,
       dividerColor: Colors.white54,
       iconButtonTheme: const IconButtonThemeData(
-          style: ButtonStyle(iconColor: MaterialStatePropertyAll<Color>(Colors.black))),
+          style: ButtonStyle(iconColor: WidgetStatePropertyAll<Color>(Colors.black))),
       textTheme: const TextTheme().copyWith(
-          bodyLarge: styleLight,
-          bodyMedium: styleLight,
-          labelSmall: styleLight,
-          labelMedium: styleLight,
-          labelLarge: styleLight,
-          bodySmall: styleLight,
-          displayLarge: styleLight,
-          titleLarge: styleLight,
-          titleMedium: styleLight,
-          titleSmall: styleLight),
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
-        background: const Color(0xFFE5E5E5),
-        brightness: Brightness.light,
+        displayLarge: styleLight,
+        displayMedium: styleLight,
+        displaySmall: styleLight,
+        headlineLarge: styleLight,
+        headlineMedium: styleLight,
+        headlineSmall: styleLight,
+        titleLarge: styleLight,
+        titleMedium: styleLight,
+        titleSmall: styleLight,
+        bodyLarge: styleLight,
+        bodyMedium: styleLight,
+        bodySmall: styleLight,
+        labelLarge: styleLight,
+        labelMedium: styleLight,
+        labelSmall: styleLight,
       ),
+      bottomSheetTheme: BottomSheetThemeData(backgroundColor: _lightColorScheme.secondaryContainer),
+      useMaterial3: true,
+      colorScheme: _lightColorScheme,
     );
   }
 
@@ -44,25 +65,27 @@ class ThemeUtils {
       hintColor: Colors.white,
       dividerColor: Colors.black12,
       iconButtonTheme: const IconButtonThemeData(
-          style: ButtonStyle(iconColor: MaterialStatePropertyAll<Color>(Colors.white))),
+          style: ButtonStyle(iconColor: WidgetStatePropertyAll<Color>(Colors.white))),
       textTheme: const TextTheme().copyWith(
-        bodyLarge: styleDark,
-        bodyMedium: styleDark,
-        labelSmall: styleDark,
-        labelMedium: styleDark,
-        labelLarge: styleDark,
-        bodySmall: styleDark,
         displayLarge: styleDark,
+        displayMedium: styleDark,
+        displaySmall: styleDark,
+        headlineLarge: styleDark,
+        headlineMedium: styleDark,
+        headlineSmall: styleDark,
         titleLarge: styleDark,
         titleMedium: styleDark,
         titleSmall: styleDark,
+        bodyLarge: styleDark,
+        bodyMedium: styleDark,
+        bodySmall: styleDark,
+        labelLarge: styleDark,
+        labelMedium: styleDark,
+        labelSmall: styleDark,
       ),
+      bottomSheetTheme: BottomSheetThemeData(backgroundColor: _darkColorScheme.secondaryContainer),
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
-        background: const Color(0xFF212121),
-        brightness: Brightness.dark,
-      ),
+      colorScheme: _darkColorScheme,
     );
   }
 

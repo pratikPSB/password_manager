@@ -47,5 +47,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+        <string>Password manager is storing key credentials. To reveal the credentials we need your identity first.</string>
 	</dict>
 </plist>

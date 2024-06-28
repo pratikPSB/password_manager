@@ -1,0 +1,25 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "password-manager-f0384",
+                    "appId": "1:521580404567:android:a4c2c19130880b01322812",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "password-manager-f0384",
+                    "configurations": {
+                        "android": "1:521580404567:android:a4c2c19130880b01322812",
+                        "ios": "1:521580404567:ios:fa5ef761e153015d322812",
+                        "macos": "1:521580404567:ios:fa5ef761e153015d322812",
+                        "web": "1:521580404567:web:3cdf30f1997ff95e322812",
+                        "windows": "1:521580404567:web:b45326973a00de94322812"
+                    }
+                }
+            }
+        }
+    }
+}

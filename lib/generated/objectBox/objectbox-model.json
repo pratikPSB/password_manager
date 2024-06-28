@@ -1,0 +1,141 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8176031653072006250",
+      "lastPropertyId": "15:3069482214139120658",
+      "name": "CredentialsModel",
+      "properties": [
+        {
+          "id": "1:1979106187780207290",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4175963333742327360",
+          "name": "vaultId",
+          "type": 9
+        },
+        {
+          "id": "3:2119007448479195285",
+          "name": "credType",
+          "type": 9
+        },
+        {
+          "id": "4:2330836632270523685",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:2695580226059334903",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "6:5133701385677807927",
+          "name": "password",
+          "type": 9
+        },
+        {
+          "id": "7:5021582654259269251",
+          "name": "websites",
+          "type": 30
+        },
+        {
+          "id": "8:1556586442814132249",
+          "name": "notes",
+          "type": 9
+        },
+        {
+          "id": "9:3134236786021946817",
+          "name": "nameOnCard",
+          "type": 9
+        },
+        {
+          "id": "10:4041055144427789223",
+          "name": "cardNumber",
+          "type": 9
+        },
+        {
+          "id": "11:7256321212006453918",
+          "name": "expiryDate",
+          "type": 9
+        },
+        {
+          "id": "12:8768654641230468087",
+          "name": "cvvCode",
+          "type": 9
+        },
+        {
+          "id": "13:2179557567610334391",
+          "name": "cardPin",
+          "type": 9
+        },
+        {
+          "id": "14:2767379020994138799",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "15:3069482214139120658",
+          "name": "updatedAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:154367247481733975",
+      "lastPropertyId": "6:1582668453177198878",
+      "name": "VaultModel",
+      "properties": [
+        {
+          "id": "1:3538744771495067067",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1839340833803044546",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3699404140035333083",
+          "name": "vaultColor",
+          "type": 9
+        },
+        {
+          "id": "4:2161531852947082650",
+          "name": "iconPath",
+          "type": 9
+        },
+        {
+          "id": "5:5482521063574432999",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "6:1582668453177198878",
+          "name": "updatedAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:154367247481733975",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

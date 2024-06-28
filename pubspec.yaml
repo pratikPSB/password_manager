@@ -12,15 +12,17 @@ dependencies:
     sdk: flutter
 
   #  local DB objectbox (based on sqlite)
-  objectbox: ^2.4.0
+  objectbox: ^4.0.0
   objectbox_flutter_libs: any
   path_provider: ^2.0.10
   path: ^1.8.0
+  json_annotation: ^4.9.0
 
   fluttertoast: ^8.2.4
 
-  #  add customized splash screen
+  #  add customized splash screen & launcher icon
   flutter_native_splash: ^2.3.9
+  flutter_launcher_icons: ^0.13.1
 
   #  to add most of all validations
   validators: ^3.0.0
@@ -31,17 +33,45 @@ dependencies:
   # auto size text view
   auto_size_text: ^3.0.0
 
+#  flutter profile picture
+  flutter_profile_picture: ^2.0.0
+
+#  multi formatter
+  flutter_multi_formatter: ^2.12.4
+
+#  encrypt
+  encrypt: ^5.0.3
+
+#  auth
+  local_auth: ^2.2.0
+
+#  firebase
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.8.0
+  firebase_crashlytics: ^3.4.9
+  firebase_auth: ^4.16.0
+  cloud_firestore: ^4.17.5
+  google_sign_in: ^6.2.1
+
+#  lottie amination
+  lottie: ^3.1.2
+
 dev_dependencies:
-  flutter_lints: 3.0.1
-  objectbox_generator: ^2.4.0
+  analyzer: ^6.4.1
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.8
+  objectbox_generator: any
+  json_serializable: ^6.7.1
   flutter_test:
     sdk: flutter
 
 flutter:
-  generate: true
+#  generate: true
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/icons/
+    - assets/json/
   fonts:
     - family: Poppins
       fonts:
@@ -59,9 +89,6 @@ objectbox:
   # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
   output_dir: generated/objectBox
 
-flutter_json:
-  generated_path: generated/json/
-
 flutter_native_splash:
   color: "#ffffff"
   image: "assets/images/pm_logo.png"
@@ -75,3 +102,22 @@ flutter_native_splash:
     icon_background_color_dark: "#353535"
 
   web: false
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/pm_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/images/pm_logo.png"
+    background_color: "#353535"
+    theme_color: "#353535"
+  windows:
+    generate: true
+    image_path: "assets/images/pm_logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/pm_logo.png"
