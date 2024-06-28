@@ -18,6 +18,7 @@ class VaultModel {
   DateTime? createdAt;
   @JsonKey(name: "updatedAt")
   DateTime? updatedAt;
+  String? firebaseDocId;
 
   VaultModel({
     this.name,
@@ -25,6 +26,7 @@ class VaultModel {
     this.iconPath,
     this.createdAt,
     this.updatedAt,
+    this.firebaseDocId,
   });
 
   VaultModel copyWith({
@@ -33,6 +35,7 @@ class VaultModel {
     String? iconPath,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? firebaseDocId,
   }) =>
       VaultModel(
         name: name ?? this.name,
@@ -40,6 +43,7 @@ class VaultModel {
         iconPath: iconPath ?? this.iconPath,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        firebaseDocId: firebaseDocId ?? this.firebaseDocId,
       );
 
   factory VaultModel.fromJson(Map<String, dynamic> json) => _$VaultModelFromJson(json);

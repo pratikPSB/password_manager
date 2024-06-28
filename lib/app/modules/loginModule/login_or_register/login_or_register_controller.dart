@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/services/auth/authentication.dart';
+import 'package:password_manager/app/data/services/firestore/firestore_operations.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 import 'package:password_manager/app/data/utils/go.dart';
 import 'package:password_manager/app/routes/app_pages.dart';
@@ -42,12 +44,16 @@ class LoginOrRegisterController extends GetxController {
 
   createDefaultVault() async {
     if (objectBox.getVaultsList().isEmpty) {
-      int id = await objectBox.addVault(VaultModel(
+      VaultModel vault = VaultModel(
           name: "Personal",
           iconPath: CustomIcons.phone,
           vaultColor: "#9ECAff",
           createdAt: DateTime.now(),
-          updatedAt: DateTime.now()));
+          updatedAt: DateTime.now());
+      DocumentReference<Map<String, dynamic>>? vaultRef =
+          await FireStoreOperations.addVault(vault);
+      vault.firebaseDocId = vaultRef?.id;
+      int id = await objectBox.addVault(vault);
       prefs().setInt(prefSelectedVaultId, id);
     }
   }
