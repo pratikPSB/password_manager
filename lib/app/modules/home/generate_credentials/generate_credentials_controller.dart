@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/model/credentials_model.dart';
 import 'package:password_manager/app/modules/home/generate_password_bottom_sheet/generate_password_bottom_sheet_controller.dart';
 import 'package:password_manager/main.dart';
 
+import '../../../data/services/firestore/firestore_operations.dart';
 import '../../../data/utils/encrypt_decrypt.dart';
 import '../../../data/utils/extensions.dart';
 import '../select_vault_bottom_sheet/select_vault_bottom_sheet_controller.dart';
@@ -75,9 +77,9 @@ class GenerateCredentialsController extends GetxController {
     performHapticFeedback();
     if (formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
-      int id = Get.find<SelectVaultBottomSheetController>()
+      String? id = Get.find<SelectVaultBottomSheetController>()
           .selectedVault
-          .value.id;
+          .value.firebaseDocId;
       DateTime dateTime = DateTime.now();
       if (arguments != null) {
         CredentialsModel model = arguments!.copyWith(
@@ -89,10 +91,11 @@ class GenerateCredentialsController extends GetxController {
           notes: EncryptionUtils().encryptAES(noteController.text),
           updatedAt: dateTime,
         );
+        await FireStoreOperations.addCredentialToVault(id!, model, fsCredId: arguments!.firebaseDocId);
         model.id = arguments!.id;
-        objectBox.addCredential(model);
+        await objectBox.addCredential(model);
       } else {
-        objectBox.addCredential(CredentialsModel(
+        CredentialsModel model = CredentialsModel(
           vaultId: id.toString(),
           credType: CredentialType.login.name,
           name: titleController.text,
@@ -102,7 +105,11 @@ class GenerateCredentialsController extends GetxController {
           notes: EncryptionUtils().encryptAES(noteController.text),
           createdAt: dateTime,
           updatedAt: dateTime,
-        ));
+        );
+        DocumentReference<Map<String, dynamic>>? credRef =
+        await FireStoreOperations.addCredentialToVault(id!, model);
+        model.firebaseDocId = credRef?.id;
+        await objectBox.addCredential(model);
       }
       Get.back();
     }

@@ -84,7 +84,7 @@ class HomeView extends GetView<HomeController> {
                       VaultModel model = controller.vaultList.value[index];
                       return Obx(
                         () => ListTile(
-                          selected: model.id == controller.selectedVaultId.value,
+                          selected: model.firebaseDocId == controller.selectedVaultId.value,
                           contentPadding: const EdgeInsetsDirectional.only(start: 10),
                           leading: SizedBox(
                             width: 50,
@@ -107,7 +107,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                           onTap: () async {
                             performHapticFeedback();
-                            prefs().setInt(prefSelectedVaultId, model.id);
+                            prefs().setString(prefSelectedVaultId, model.firebaseDocId!);
                             await controller.fetchSelectedVault();
                             Get.back();
                             controller.updateCredentialStream();

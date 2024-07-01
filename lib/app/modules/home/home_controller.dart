@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:password_manager/app/data/model/credentials_model.dart';
 import 'package:password_manager/app/data/model/vault_model.dart';
+import 'package:password_manager/app/data/services/firestore/firestore_operations.dart';
 import 'package:password_manager/app/data/utils/encrypt_decrypt.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 
@@ -17,7 +20,8 @@ import '../../routes/app_pages.dart';
 class HomeController extends GetxController {
   late StreamSubscription<List<VaultModel>> _vaultListStream;
   Rx<List<VaultModel>> vaultList = Rx<List<VaultModel>>(objectBox.getVaultsList());
-  RxInt selectedVaultId = 0.obs;
+  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _vaultListStreamSubscriptionFs;
+  RxString selectedVaultId = "".obs;
   Rx<VaultModel> selectedVault = Rx<VaultModel>(objectBox.getVaultsList().first);
 
   StreamSubscription<List<CredentialsModel>>? _credentialsStream;
@@ -37,6 +41,19 @@ class HomeController extends GetxController {
     _vaultListStream = objectBox.getVaults().listen((event) {
       vaultList.value = event;
     });
+    Stream<QuerySnapshot<Map<String, dynamic>>>? vaultListStreamFs =
+        await FireStoreOperations.getVaultList();
+    _vaultListStreamSubscriptionFs = vaultListStreamFs?.listen((event) {
+      if (event.docs.isNotEmpty) {
+        List<VaultModel> list = [];
+        for (var action in event.docs) {
+          VaultModel model = VaultModel.fromJson(action.data());
+          model.firebaseDocId = action.id;
+          list.add(model);
+        }
+        vaultList.value = list;
+      }
+    });
     updateCredentialStream();
   }
 
@@ -44,6 +61,7 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
     _vaultListStream.cancel();
+    _vaultListStreamSubscriptionFs?.cancel();
     if (_credentialsStream != null) _credentialsStream?.cancel();
   }
 
@@ -69,8 +87,8 @@ class HomeController extends GetxController {
   }
 
   fetchSelectedVault() async {
-    selectedVaultId.value = await prefs().getInt(prefSelectedVaultId);
-    selectedVault.value = objectBox.getVaultById(selectedVaultId.value);
+    selectedVaultId.value = await prefs().getString(prefSelectedVaultId);
+    selectedVault.value = objectBox.getVaultByFirebaseDocId(selectedVaultId.value);
   }
 
   Future<bool> authenticate() async {
@@ -117,7 +135,8 @@ class HomeController extends GetxController {
     _timer.cancel();
   }
 
-  void handleDelete(CredentialsModel model) {
-    objectBox.removeCredential(model.id);
+  Future<void> handleDelete(CredentialsModel model) async {
+    await FireStoreOperations.deleteCredentialFromVault(model.vaultId!, model.firebaseDocId!);
+    await objectBox.removeCredential(model.id);
   }
 }

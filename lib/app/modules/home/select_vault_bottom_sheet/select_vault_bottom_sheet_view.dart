@@ -23,7 +23,7 @@ class SelectVaultBottomSheetView extends GetView<SelectVaultBottomSheetControlle
           if (index < controller.vaultList.value.length) {
             VaultModel model = controller.vaultList.value[index];
             return ListTile(
-                selected: model.id == controller.selectedVaultId.value,
+                selected: model.firebaseDocId == controller.selectedVaultId.value,
                 contentPadding: const EdgeInsetsDirectional.only(start: 10),
                 shape: 50.modifyShapeBorder(),
                 leading: SizedBox(
@@ -34,7 +34,7 @@ class SelectVaultBottomSheetView extends GetView<SelectVaultBottomSheetControlle
                     bgColor: model.vaultColor,
                   ),
                 ),
-                trailing: (model.id == controller.selectedVaultId.value)
+                trailing: (model.firebaseDocId == controller.selectedVaultId.value)
                     ? IconButton(
                         iconSize: 24,
                         onPressed: () {},

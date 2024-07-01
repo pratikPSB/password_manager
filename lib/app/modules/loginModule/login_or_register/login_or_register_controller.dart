@@ -53,8 +53,8 @@ class LoginOrRegisterController extends GetxController {
       DocumentReference<Map<String, dynamic>>? vaultRef =
           await FireStoreOperations.addVault(vault);
       vault.firebaseDocId = vaultRef?.id;
-      int id = await objectBox.addVault(vault);
-      prefs().setInt(prefSelectedVaultId, id);
+      await objectBox.addVault(vault);
+      prefs().setString(prefSelectedVaultId, vaultRef!.id);
     }
   }
 }

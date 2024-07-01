@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/app/data/model/vault_model.dart';
@@ -7,6 +8,7 @@ import 'package:password_manager/app/data/resources/assets.dart';
 import 'package:password_manager/app/data/utils/extensions.dart';
 
 import '../../../../main.dart';
+import '../../../data/services/firestore/firestore_operations.dart';
 
 class CreateVaultController extends GetxController {
   List<String> iconList = CustomIcons.getIconList();
@@ -55,16 +57,21 @@ class CreateVaultController extends GetxController {
           vaultColor: selectedColorString.value,
           updatedAt: dateTime,
         );
+        await FireStoreOperations.addVault(model, fbVaultId: arguments!.firebaseDocId);
         model.id = arguments!.id;
         objectBox.addVault(model);
       } else {
-        objectBox.addVault(VaultModel(
+        VaultModel vault = VaultModel(
           iconPath: selectedIconPath.value,
           name: titleController.text,
           vaultColor: selectedColorString.value,
           createdAt: dateTime,
           updatedAt: dateTime,
-        ));
+        );
+        DocumentReference<Map<String, dynamic>>? vaultRef =
+            await FireStoreOperations.addVault(vault);
+        vault.firebaseDocId = vaultRef?.id;
+        await objectBox.addVault(vault);
       }
       Get.back();
     }

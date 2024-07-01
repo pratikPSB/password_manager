@@ -49,6 +49,8 @@ class CredentialsModel {
   DateTime? createdAt;
   @JsonKey(name: "updatedAt")
   DateTime? updatedAt;
+  @JsonKey(name: "firebaseDocId")
+  String? firebaseDocId;
 
   CredentialsModel({
     this.vaultId,
@@ -65,6 +67,7 @@ class CredentialsModel {
     this.cardPin,
     this.createdAt,
     this.updatedAt,
+    this.firebaseDocId,
   });
 
   CredentialsModel copyWith({
@@ -82,6 +85,7 @@ class CredentialsModel {
     String? cardPin,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? firebaseDocId,
   }) =>
       CredentialsModel(
         vaultId: vaultId ?? this.vaultId,
@@ -98,6 +102,7 @@ class CredentialsModel {
         cardPin: cardPin ?? this.cardPin,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        firebaseDocId: firebaseDocId ?? this.firebaseDocId,
       );
 
   factory CredentialsModel.fromJson(Map<String, dynamic> json) => _$CredentialsModelFromJson(json);
@@ -105,9 +110,4 @@ class CredentialsModel {
   Map<String, dynamic> toJson() => _$CredentialsModelToJson(this);
 }
 
-enum CredentialType {
-  login,
-  alias,
-  card,
-  note
-}
+enum CredentialType { login, alias, card, note }

@@ -9,19 +9,21 @@ import '../../model/credentials_model.dart';
 class FireStoreOperations {
   static const String _cnUser = "users";
   static const String _cnVault = "vaults";
-  static const String _cnCredentials = "users";
+  static const String _cnCredentials = "credentials";
   static const String _userNotPresent = "user not logged in!!!";
 
-  static Future<DocumentReference<Map<String, dynamic>>?> addVault(
-    VaultModel vault,
-  ) async {
+  static Future<DocumentReference<Map<String, dynamic>>?> addVault(VaultModel vault,
+      {String? fbVaultId = ""}) async {
     User? user = await Authentication.getCurrentUser();
     if (user != null) {
-      return await FirebaseFirestore.instance
-          .collection(_cnUser)
-          .doc(user.uid)
-          .collection(_cnVault)
-          .add(vault.toJson());
+      CollectionReference<Map<String, dynamic>> ref =
+          FirebaseFirestore.instance.collection(_cnUser).doc(user.uid).collection(_cnVault);
+      if (fbVaultId != "") {
+        await ref.doc(fbVaultId).set(vault.toJson(), SetOptions(merge: true));
+        return ref.doc(fbVaultId);
+      } else {
+        return ref.add(vault.toJson());
+      }
     } else {
       printDebug(_userNotPresent);
       return null;
@@ -29,28 +31,51 @@ class FireStoreOperations {
   }
 
   static Future<DocumentReference<Map<String, dynamic>>?> addCredentialToVault(
-    String fsVaultID,
-    CredentialsModel credModel,
-  ) async {
+      String fsVaultID, CredentialsModel credModel,
+      {String? fsCredId = ""}) async {
     User? user = await Authentication.getCurrentUser();
     if (user != null) {
-      return await FirebaseFirestore.instance
+      CollectionReference<Map<String, dynamic>> ref = FirebaseFirestore.instance
           .collection(_cnUser)
           .doc(user.uid)
           .collection(_cnVault)
           .doc(fsVaultID)
-          .collection(_cnCredentials)
-          .add(credModel.toJson());
+          .collection(_cnCredentials);
+      if (fsCredId != "") {
+        await ref.doc(fsCredId).set(credModel.toJson(), SetOptions(merge: true));
+        return ref.doc(fsCredId);
+      } else {
+        return ref.add(credModel.toJson());
+      }
     } else {
       printDebug(_userNotPresent);
       return null;
     }
   }
 
-  static Future<Stream<QuerySnapshot<Map<String, dynamic>>>?> getVaultList() async {
+  static Future<void> deleteCredentialFromVault(
+    String fsVaultID,
+    String fsCredId,
+  ) async {
     User? user = await Authentication.getCurrentUser();
     if (user != null) {
       return FirebaseFirestore.instance
+          .collection(_cnUser)
+          .doc(user.uid)
+          .collection(_cnVault)
+          .doc(fsVaultID)
+          .collection(_cnCredentials)
+          .doc(fsCredId)
+          .delete();
+    } else {
+      printDebug(_userNotPresent);
+    }
+  }
+
+  static Future<Stream<QuerySnapshot<Map<String, dynamic>>>?> getVaultList() async {
+    User? user = await Authentication.getCurrentUser();
+    if (user != null) {
+      return await FirebaseFirestore.instance
           .collection(_cnUser)
           .doc(user.uid)
           .collection(_cnVault)

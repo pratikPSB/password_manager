@@ -18,6 +18,7 @@ class VaultModel {
   DateTime? createdAt;
   @JsonKey(name: "updatedAt")
   DateTime? updatedAt;
+  @JsonKey(name: "firebaseDocId")
   String? firebaseDocId;
 
   VaultModel({

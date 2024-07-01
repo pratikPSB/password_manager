@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../main.dart';
 import '../../../data/model/credentials_model.dart';
+import '../../../data/services/firestore/firestore_operations.dart';
 import '../../../data/utils/encrypt_decrypt.dart';
 import '../../../data/utils/extensions.dart';
 import '../select_vault_bottom_sheet/select_vault_bottom_sheet_controller.dart';
@@ -29,9 +31,9 @@ class GenerateNoteController extends GetxController {
     performHapticFeedback();
     if (formKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000), () => 42);
-      int id = Get.find<SelectVaultBottomSheetController>()
+      String? id = Get.find<SelectVaultBottomSheetController>()
           .selectedVault
-          .value.id;
+          .value.firebaseDocId;
       DateTime dateTime = DateTime.now();
       if (arguments != null) {
         CredentialsModel model = arguments!.copyWith(
@@ -40,17 +42,22 @@ class GenerateNoteController extends GetxController {
           notes: EncryptionUtils().encryptAES(noteController.text),
           updatedAt: dateTime,
         );
+        await FireStoreOperations.addCredentialToVault(id!, model, fsCredId: arguments!.firebaseDocId);
         model.id = arguments!.id;
         objectBox.addCredential(model);
       } else {
-        objectBox.addCredential(CredentialsModel(
+        CredentialsModel model = CredentialsModel(
           credType: CredentialType.note.name,
           vaultId: id.toString(),
           name: EncryptionUtils().encryptAES(titleController.text),
           notes: EncryptionUtils().encryptAES(noteController.text),
           createdAt: dateTime,
           updatedAt: dateTime,
-        ));
+        );
+        DocumentReference<Map<String, dynamic>>? credRef =
+        await FireStoreOperations.addCredentialToVault(id!, model);
+        model.firebaseDocId = credRef?.id;
+        objectBox.addCredential(model);
       }
       Get.back();
     }

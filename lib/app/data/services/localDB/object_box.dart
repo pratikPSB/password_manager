@@ -67,8 +67,8 @@ class ObjectBox {
     return builder.watch(triggerImmediately: true).map((query) => query.find());
   }
 
-  VaultModel getVaultById(int id) {
-    return _vaultBox.query(VaultModel_.id.equals(id)).build().findFirst()!;
+  VaultModel getVaultByFirebaseDocId(String id) {
+    return _vaultBox.query(VaultModel_.firebaseDocId.equals(id)).build().findFirst()!;
   }
 
   List<VaultModel> getVaultsList() {

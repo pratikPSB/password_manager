@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 8176031653072006250),
       name: 'CredentialsModel',
-      lastPropertyId: const obx_int.IdUid(15, 3069482214139120658),
+      lastPropertyId: const obx_int.IdUid(16, 389228600872326308),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -100,6 +100,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(15, 3069482214139120658),
             name: 'updatedAt',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(16, 389228600872326308),
+            name: 'firebaseDocId',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -107,7 +112,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 154367247481733975),
       name: 'VaultModel',
-      lastPropertyId: const obx_int.IdUid(6, 1582668453177198878),
+      lastPropertyId: const obx_int.IdUid(7, 6503012497554699867),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -139,6 +144,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(6, 1582668453177198878),
             name: 'updatedAt',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(7, 6503012497554699867),
+            name: 'firebaseDocId',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -234,7 +244,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               object.cvvCode == null ? null : fbb.writeString(object.cvvCode!);
           final cardPinOffset =
               object.cardPin == null ? null : fbb.writeString(object.cardPin!);
-          fbb.startTable(16);
+          final firebaseDocIdOffset = object.firebaseDocId == null
+              ? null
+              : fbb.writeString(object.firebaseDocId!);
+          fbb.startTable(17);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, vaultIdOffset);
           fbb.addOffset(2, credTypeOffset);
@@ -250,6 +263,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(12, cardPinOffset);
           fbb.addInt64(13, object.createdAt?.millisecondsSinceEpoch);
           fbb.addInt64(14, object.updatedAt?.millisecondsSinceEpoch);
+          fbb.addOffset(15, firebaseDocIdOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -292,6 +306,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final updatedAtParam = updatedAtValue == null
               ? null
               : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
+          final firebaseDocIdParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 34);
           final object = CredentialsModel(
               vaultId: vaultIdParam,
               credType: credTypeParam,
@@ -306,7 +323,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               cvvCode: cvvCodeParam,
               cardPin: cardPinParam,
               createdAt: createdAtParam,
-              updatedAt: updatedAtParam)
+              updatedAt: updatedAtParam,
+              firebaseDocId: firebaseDocIdParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -328,13 +346,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final iconPathOffset = object.iconPath == null
               ? null
               : fbb.writeString(object.iconPath!);
-          fbb.startTable(7);
+          final firebaseDocIdOffset = object.firebaseDocId == null
+              ? null
+              : fbb.writeString(object.firebaseDocId!);
+          fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, vaultColorOffset);
           fbb.addOffset(3, iconPathOffset);
           fbb.addInt64(4, object.createdAt?.millisecondsSinceEpoch);
           fbb.addInt64(5, object.updatedAt?.millisecondsSinceEpoch);
+          fbb.addOffset(6, firebaseDocIdOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -357,12 +379,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final updatedAtParam = updatedAtValue == null
               ? null
               : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
+          final firebaseDocIdParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 16);
           final object = VaultModel(
               name: nameParam,
               vaultColor: vaultColorParam,
               iconPath: iconPathParam,
               createdAt: createdAtParam,
-              updatedAt: updatedAtParam)
+              updatedAt: updatedAtParam,
+              firebaseDocId: firebaseDocIdParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -433,6 +459,10 @@ class CredentialsModel_ {
   /// See [CredentialsModel.updatedAt].
   static final updatedAt =
       obx.QueryDateProperty<CredentialsModel>(_entities[0].properties[14]);
+
+  /// See [CredentialsModel.firebaseDocId].
+  static final firebaseDocId =
+      obx.QueryStringProperty<CredentialsModel>(_entities[0].properties[15]);
 }
 
 /// [VaultModel] entity fields to define ObjectBox queries.
@@ -460,4 +490,8 @@ class VaultModel_ {
   /// See [VaultModel.updatedAt].
   static final updatedAt =
       obx.QueryDateProperty<VaultModel>(_entities[1].properties[5]);
+
+  /// See [VaultModel.firebaseDocId].
+  static final firebaseDocId =
+      obx.QueryStringProperty<VaultModel>(_entities[1].properties[6]);
 }
